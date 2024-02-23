@@ -1,0 +1,92 @@
+1	English	application/x-vnd.Haiku-StartUp	48760955
+Error	Autolaunch view: edit entry	This will not be visible	Error
+Command	Autolaunch view		Command
+The new script could not be created	Autolaunch view: add new script		The new script could not be created
+Type	Autolaunch view		Type
+OK	Autolaunch view: add new script		OK
+About…	Main window		About…
+OK	Autolaunch view: edit entry		OK
+Close	Main window		Close
+Do not create	Environment view		Do not create
+All fields are mandatory.	Autolaunch view: edit entry		All fields are mandatory.
+Disabled	Environment view		Disabled
+Options	Main window		Options
+Add file link…	Autolaunch view		Add file link…
+Do not create	text editor view		Do not create
+Enabled	Environment view		Enabled
+Unknown	Autolaunch view		Unknown
+Delete entry	Autolaunch view		Delete entry
+File	Autolaunch view		File
+Create shell script…	Autolaunch view		Create shell script…
+Autolaunch	Main window		Autolaunch
+Edit entry	Autolaunch view: edit entry		Edit entry
+All fields are mandatory.	Autolaunch view: add new script		All fields are mandatory.
+Error	Environment view	This will not be visible	Error
+Enabled	Autolaunch view: edit entry		Enabled
+Create	Autolaunch view: add new script		Create
+Open BootManager	Main window		Open BootManager
+Cancel	Autolaunch view: add new script		Cancel
+Add entry	Autolaunch view: edit entry		Add entry
+Delete	Environment view		Delete
+Cancel	Autolaunch view: edit entry		Cancel
+Name	Environment view		Name
+Data	Autolaunch view		Data
+Name	Autolaunch view: add new script		Name
+Edit	Autolaunch view		Edit
+Cancel	Autolaunch view		Cancel
+Add	Autolaunch view		Add
+Destination: 	Autolaunch view		Destination: 
+Restore	text editor view		Restore
+Delete entry	Environment view	This will not be visible	Delete entry
+Status	Environment view		Status
+Create	Environment view		Create
+Value	Environment view		Value
+The BeOS and Haiku community members.	About box		The BeOS and Haiku community members.
+Open file	Environment view		Open file
+Create	text editor view		Create
+Restore to default? The current file's contents will be replaced.	text editor view		Restore to default? The current file's contents will be replaced.
+Error	Autolaunch view	This will not be visible	Error
+Website:	About box		Website:
+Cancel	Environment view		Cancel
+Edit	Environment view		Edit
+0.1\tInitial version.	About box		0.1\tInitial version.
+Do not restore	text editor view		Do not restore
+Entry missing	text editor view	This will not be visible	Entry missing
+Delete entry	Environment view		Delete entry
+Error, an entry must be selected first.	Autolaunch view		Error, an entry must be selected first.
+Close	Environment view		Close
+Key	Autolaunch view: edit entry		Key
+Copy file…	Autolaunch view		Copy file…
+Update	Autolaunch view		Update
+Error, an entry must be selected first.	Environment view		Error, an entry must be selected first.
+Symlink	Autolaunch view		Symlink
+Start-up items editor.	About box		Start-up items editor.
+Add	Environment view		Add
+Save	text editor view		Save
+Value	Autolaunch view: edit entry		Value
+Go to	Main window		Go to
+StartUp	System name		StartUp
+Delete	Autolaunch view		Delete
+Default	Environment view		Default
+Open folder	Autolaunch view		Open folder
+Close	Autolaunch view		Close
+Entry missing	Environment view	This will not be visible	Entry missing
+Check README for more information.	About box		Check README for more information.
+Delete entry	Autolaunch view	This will not be visible	Delete entry
+Directory	Autolaunch view		Directory
+Restore?	text editor view	This will not be visible	Restore?
+This file currently does not exist. Do you want to create it?	Environment view		This file currently does not exist. Do you want to create it?
+Cafeina (original author)	About box		Cafeina (original author)
+Do you want to delete this entry?	Autolaunch view		Do you want to delete this entry?
+Update	Environment view		Update
+Save	Autolaunch view: edit entry		Save
+Read only	text editor view		Read only
+Do you want to delete this entry?	Environment view		Do you want to delete this entry?
+Shell	Autolaunch view: add new script		Shell
+Reset	text editor view		Reset
+This file currently does not exist. Do you want to create it?	text editor view		This file currently does not exist. Do you want to create it?
+Update	text editor view		Update
+Profile environment	Main window		Profile environment
+Edit entry	Autolaunch view: add new script		Edit entry
+Error	Autolaunch view: add new script	This will not be visible	Error
+Open in editor	text editor view		Open in editor

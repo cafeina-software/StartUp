@@ -1,0 +1,22 @@
+# StartUp 0.1
+
+This is an unstable initial version intended only for testing and previewing.
+Although it mostly works, it could contain a number of stability issues that
+could make it not useful for end users.
+
+* New features:
+
+- New application written from scratch, using the Haiku API.
+- It can create entries in the automatic launch directory in order to launch
+  applications at start.
+- It can also edit the UserBootscript used for automatic commands at start-up
+  as well.
+- It can edit the environment related files ~/config/settings/profile and
+  ~/config/settings/boot/UserSetupEnvironment in a single application, but also
+  allowing the user to open them in their default text editor for source code.
+
+* Miscellaneous:
+
+- Naming: the name "StartUp" does what its name says, it is intended to
+  deal with things that have to do with the start of Haiku after the booting
+  process.

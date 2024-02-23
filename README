@@ -1,0 +1,19 @@
+# About
+
+StartUp is a start-up items editor for Haiku. It can create entries to
+automatically launch applications at start, edit the user script that is run
+after the system loading process has finished (UserBootscript) and other related
+environment scripts.
+
+# Building
+
+To build this application, in a terminal move to the root directory of the
+source code and run:
+
+make
+
+# License
+
+This application is free and open software. For the licensing terms under which
+this application's source code is released, please read LICENSE.
+

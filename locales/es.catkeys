@@ -1,0 +1,92 @@
+1	Spanish	application/x-vnd.Haiku-StartUp	48760955
+Error	Autolaunch view: edit entry	This will not be visible	Error
+Command	Autolaunch view		Comando
+The new script could not be created	Autolaunch view: add new script		No se pudo crear el nuevo archivo de guion
+Type	Autolaunch view		Tipo
+OK	Autolaunch view: add new script		Aceptar
+About…	Main window		Acerca de…
+OK	Autolaunch view: edit entry		Aceptar
+Close	Main window		Cerrar
+Do not create	Environment view		No crear
+All fields are mandatory.	Autolaunch view: edit entry		Todos los campos son obligatorios.
+Autolaunch	Main window		Inicio automático
+Disabled	Environment view		Desactivado
+Options	Main window		Opciones
+Add file link…	Autolaunch view		Añadir enlace a archivo…
+Do not create	text editor view		No crear
+Enabled	Environment view		Activado
+Unknown	Autolaunch view		Desconocido
+Delete entry	Autolaunch view		Eliminar entrada
+File	Autolaunch view		Archivo
+Create shell script…	Autolaunch view		Crear guion de shell…
+Edit entry	Autolaunch view: edit entry		Editar entrada
+All fields are mandatory.	Autolaunch view: add new script		Todos los campos son obligatorios.
+Error	Environment view	This will not be visible	Error
+Enabled	Autolaunch view: edit entry		Activado
+Create	Autolaunch view: add new script		Crear
+Open BootManager	Main window		Abrir el Gestor de arranque
+Cancel	Autolaunch view: add new script		Cancelar
+Add entry	Autolaunch view: edit entry		Añadir entrada
+Delete	Environment view		Eliminar
+Cancel	Autolaunch view: edit entry		Cancelar
+Data	Autolaunch view		Datos
+Name	Environment view		Nombre
+Name	Autolaunch view: add new script		Nombre
+Edit	Autolaunch view		Editar
+Cancel	Autolaunch view		Cancelar
+Add	Autolaunch view		Añadir
+Destination: 	Autolaunch view		Destino: 
+Restore	text editor view		Restablecer
+Delete entry	Environment view	This will not be visible	Eliminar entrada
+Status	Environment view		Estado
+Create	Environment view		Crear
+Value	Environment view		Valor
+The BeOS and Haiku community members.	About box		Los miembros de la comunidad de BeOS y Haiku.
+Open file	Environment view		Abrir archivo
+Create	text editor view		Crear
+Restore to default? The current file's contents will be replaced.	text editor view		¿Desea restablecer el archivo al valor predeterminado? El archivo actual será reemplazado.
+Error	Autolaunch view	This will not be visible	Error
+Website:	About box		Sitio web:
+Cancel	Environment view		Cancelar
+Edit	Environment view		Editar
+0.1\tInitial version.	About box		0.1\tVersión inicial.
+Do not restore	text editor view		No restablecer
+Entry missing	text editor view	This will not be visible	Entrada no existe
+Delete entry	Environment view		Eliminar entrada
+Error, an entry must be selected first.	Autolaunch view		Error, primero debe seleccionarse una entrada.
+Close	Environment view		Cerrar
+Key	Autolaunch view: edit entry		Variable
+Copy file…	Autolaunch view		Copiar archivo…
+Update	Autolaunch view		Actualizar
+Error, an entry must be selected first.	Environment view		Error, primero debe seleccionarse una entrada.
+Symlink	Autolaunch view		Enlace simbólico
+Start-up items editor.	About box		Editor de elementos del inicio del sistema.
+Add	Environment view		Añadir
+Save	text editor view		Guardar
+Value	Autolaunch view: edit entry		Valor
+Go to	Main window		Ir a
+StartUp	System name		Inicio
+Delete	Autolaunch view		Eliminar
+Default	Environment view		Predeterminado
+Open folder	Autolaunch view		Abrir carpeta
+Close	Autolaunch view		Cerrar
+Entry missing	Environment view	This will not be visible	Entrada no existe
+Check README for more information.	About box		Consulte el archivo README para más información.
+Delete entry	Autolaunch view	This will not be visible	Eliminar entrada
+Directory	Autolaunch view		Carpeta
+Restore?	text editor view	This will not be visible	¿Restablecer?
+This file currently does not exist. Do you want to create it?	Environment view		Este archivo aún no existe. ¿Desea crearlo?
+Cafeina (original author)	About box		Cafeina (autor original)
+Do you want to delete this entry?	Autolaunch view		¿Desea eliminar esta entrada?
+Update	Environment view		Actualizar
+Save	Autolaunch view: edit entry		Guardar
+Read only	text editor view		Sólo lectura
+Do you want to delete this entry?	Environment view		¿Desea eliminar esta entrada?
+Shell	Autolaunch view: add new script		Shell
+Reset	text editor view		Restablecer
+This file currently does not exist. Do you want to create it?	text editor view		Este archivo aún no existe. ¿Desea crearlo?
+Update	text editor view		Actualizar
+Profile environment	Main window		Entorno del perfil
+Edit entry	Autolaunch view: add new script		Editar entrada
+Error	Autolaunch view: add new script	This will not be visible	Error
+Open in editor	text editor view		Abrir en editor
