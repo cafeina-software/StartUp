@@ -1,5 +1,6 @@
 #include <AppKit.h>
 #include <InterfaceKit.h>
+#include <Url.h>
 #include <Catalog.h>
 #include <cstdio>
 
@@ -28,11 +29,17 @@ StartUpWin::StartUpWin()
 
     SetSizeLimits(550, B_SIZE_UNLIMITED, 550, B_SIZE_UNLIMITED);
 
+    BMenu* helpMenu = new BMenu(B_TRANSLATE("Help topics"), B_ITEMS_IN_COLUMN);
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Bash and scripting"), new BMessage('hbsh')));
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Boot Loader"), new BMessage('hboo')));
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Disabling components of packages"), new BMessage('hdis')));
+
     BMenu* tabSelectionMenu = new BMenu(B_TRANSLATE("Go to"), B_ITEMS_IN_COLUMN);
     tabSelectionMenu->SetRadioMode(true);
 
     optionsMenu = new BPopUpMenu(B_TRANSLATE("Options"), false, false, B_ITEMS_IN_COLUMN);
     optionsMenu->AddItem(tabSelectionMenu);
+    optionsMenu->AddItem(helpMenu);
     optionsMenu->AddSeparatorItem();
     optionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Open BootManager"), new BMessage('boot')));
 
@@ -101,10 +108,37 @@ void StartUpWin::MessageReceived(BMessage* message)
             if(tabView->CountTabs() > 3)
                 tabView->Select(3);
             break;
+        case 'hbsh':
+            OpenDocumentation("bash-scripting");
+            break;
+        case 'hboo':
+            OpenDocumentation("bootloader");
+            break;
+        case 'hdis':
+            launch("application/x-vnd.Be.URL.https",
+                "https://www.haiku-os.org/guides/daily-tasks/disable-package-entries");
+            break;
 		default:
 		{
 			BWindow::MessageReceived(message);
 			break;
 		}
 	}
+}
+
+void StartUpWin::OpenDocumentation(const char* what)
+{
+    BString localdoc("file:///boot/system/documentation/userguide/%lang%/%doc%.html");
+    localdoc.ReplaceAll("%lang%", B_TRANSLATE_COMMENT("en",
+        "This is the language code of the local user guide. If there is no translation, leave the English default."));
+    localdoc.ReplaceAll("%doc%", what);
+
+    BString webdoc("https://www.haiku-os.org/docs/userguide/%lang%/%doc%.html");
+    webdoc.ReplaceAll("%lang%", B_TRANSLATE_COMMENT("en",
+        "This is the language code of the remote user guide. If there is no translation, leave the English default."));
+    webdoc.ReplaceAll("%doc%", what);
+
+    if(BUrl(localdoc.String()).OpenWithPreferredApplication(false) != B_OK)
+        if(BUrl(webdoc.String()).OpenWithPreferredApplication(false) != B_OK)
+            fprintf(stderr, "Error. It was not possible to open the local or remote documentation.\n");
 }

@@ -12,9 +12,12 @@ public:
         StartUpWin();
     virtual void
         MessageReceived     (BMessage* msg);
+    void
+        OpenDocumentation   (const char* entry);
 private:
     BTabView               *tabView;
-    BPopUpMenu             *optionsMenu;
+    BPopUpMenu             *optionsMenu,
+                           *helpMenu;
     BMenuField             *optionsMenuField;
     AutolaunchView         *alview;
     TextEditorView         *ubsview,

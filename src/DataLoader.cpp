@@ -27,7 +27,6 @@ void launch(const char* mimetype, const char* path)
 
 bool exists(const char* filename)
 {
-    bool result;
     BEntry entry(filename);
     return entry.Exists();
 }

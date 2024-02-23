@@ -1,4 +1,4 @@
-1	Spanish	application/x-vnd.Haiku-StartUp	48760955
+1	Spanish	application/x-vnd.Haiku-StartUp	885487555
 Error	Autolaunch view: edit entry	This will not be visible	Error
 Command	Autolaunch view		Comando
 The new script could not be created	Autolaunch view: add new script		No se pudo crear el nuevo archivo de guion
@@ -6,6 +6,7 @@ Type	Autolaunch view		Tipo
 OK	Autolaunch view: add new script		Aceptar
 About…	Main window		Acerca de…
 OK	Autolaunch view: edit entry		Aceptar
+en	Main window	This is the language code of the remote user guide. If there is no translation, leave the English default.	es
 Close	Main window		Cerrar
 Do not create	Environment view		No crear
 All fields are mandatory.	Autolaunch view: edit entry		Todos los campos son obligatorios.
@@ -22,6 +23,7 @@ Create shell script…	Autolaunch view		Crear guion de shell…
 Edit entry	Autolaunch view: edit entry		Editar entrada
 All fields are mandatory.	Autolaunch view: add new script		Todos los campos son obligatorios.
 Error	Environment view	This will not be visible	Error
+en	Main window	This is the language code of the local user guide. If there is no translation, leave the English default.	es
 Enabled	Autolaunch view: edit entry		Activado
 Create	Autolaunch view: add new script		Crear
 Open BootManager	Main window		Abrir el Gestor de arranque
@@ -67,8 +69,11 @@ Value	Autolaunch view: edit entry		Valor
 Go to	Main window		Ir a
 StartUp	System name		Inicio
 Delete	Autolaunch view		Eliminar
+Help topics	Main window		Temas de ayuda
+Boot Loader	Main window		Cargador de arranque
 Default	Environment view		Predeterminado
 Open folder	Autolaunch view		Abrir carpeta
+Bash and scripting	Main window		Bash y scripting
 Close	Autolaunch view		Cerrar
 Entry missing	Environment view	This will not be visible	Entrada no existe
 Check README for more information.	About box		Consulte el archivo README para más información.
@@ -85,6 +90,7 @@ Do you want to delete this entry?	Environment view		¿Desea eliminar esta entrad
 Shell	Autolaunch view: add new script		Shell
 Reset	text editor view		Restablecer
 This file currently does not exist. Do you want to create it?	text editor view		Este archivo aún no existe. ¿Desea crearlo?
+Disabling components of packages	Main window		Deshabilitar componentes de los paquetes
 Update	text editor view		Actualizar
 Profile environment	Main window		Entorno del perfil
 Edit entry	Autolaunch view: add new script		Editar entrada

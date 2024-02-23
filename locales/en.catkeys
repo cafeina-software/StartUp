@@ -1,4 +1,4 @@
-1	English	application/x-vnd.Haiku-StartUp	48760955
+1	English	application/x-vnd.Haiku-StartUp	885487555
 Error	Autolaunch view: edit entry	This will not be visible	Error
 Command	Autolaunch view		Command
 The new script could not be created	Autolaunch view: add new script		The new script could not be created
@@ -6,6 +6,7 @@ Type	Autolaunch view		Type
 OK	Autolaunch view: add new script		OK
 About…	Main window		About…
 OK	Autolaunch view: edit entry		OK
+en	Main window	This is the language code of the remote user guide. If there is no translation, leave the English default.	en
 Close	Main window		Close
 Do not create	Environment view		Do not create
 All fields are mandatory.	Autolaunch view: edit entry		All fields are mandatory.
@@ -22,6 +23,7 @@ Autolaunch	Main window		Autolaunch
 Edit entry	Autolaunch view: edit entry		Edit entry
 All fields are mandatory.	Autolaunch view: add new script		All fields are mandatory.
 Error	Environment view	This will not be visible	Error
+en	Main window	This is the language code of the local user guide. If there is no translation, leave the English default.	en
 Enabled	Autolaunch view: edit entry		Enabled
 Create	Autolaunch view: add new script		Create
 Open BootManager	Main window		Open BootManager
@@ -56,8 +58,8 @@ Delete entry	Environment view		Delete entry
 Error, an entry must be selected first.	Autolaunch view		Error, an entry must be selected first.
 Close	Environment view		Close
 Key	Autolaunch view: edit entry		Key
-Copy file…	Autolaunch view		Copy file…
 Update	Autolaunch view		Update
+Copy file…	Autolaunch view		Copy file…
 Error, an entry must be selected first.	Environment view		Error, an entry must be selected first.
 Symlink	Autolaunch view		Symlink
 Start-up items editor.	About box		Start-up items editor.
@@ -67,7 +69,10 @@ Value	Autolaunch view: edit entry		Value
 Go to	Main window		Go to
 StartUp	System name		StartUp
 Delete	Autolaunch view		Delete
+Help topics	Main window		Help topics
+Boot Loader	Main window		Boot Loader
 Default	Environment view		Default
+Bash and scripting	Main window		Bash and scripting
 Open folder	Autolaunch view		Open folder
 Close	Autolaunch view		Close
 Entry missing	Environment view	This will not be visible	Entry missing
@@ -85,6 +90,7 @@ Do you want to delete this entry?	Environment view		Do you want to delete this e
 Shell	Autolaunch view: add new script		Shell
 Reset	text editor view		Reset
 This file currently does not exist. Do you want to create it?	text editor view		This file currently does not exist. Do you want to create it?
+Disabling components of packages	Main window		Disabling components of packages
 Update	text editor view		Update
 Profile environment	Main window		Profile environment
 Edit entry	Autolaunch view: add new script		Edit entry
