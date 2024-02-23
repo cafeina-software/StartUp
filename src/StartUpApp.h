@@ -9,7 +9,7 @@
 #define kAppName "StartUp"
 #define kAppSignature "application/x-vnd.Haiku-StartUp"
 #define kAppVersionStr "0.1"
-#define kAppHomePage ""
+#define kAppHomePage "https://codeberg.org/cafeina/StartUp"
 
 class StartUpApp : public BApplication
 {
