@@ -1,98 +1,107 @@
-1	Spanish	application/x-vnd.Haiku-StartUp	885487555
-Error	Autolaunch view: edit entry	This will not be visible	Error
+1	Spanish	application/x-vnd.Haiku-StartUp	350658801
+Terminal environment	Main window		Perfil del entorno
 Command	Autolaunch view		Comando
-The new script could not be created	Autolaunch view: add new script		No se pudo crear el nuevo archivo de guion
-Type	Autolaunch view		Tipo
+Enable single step hack for QEMU	Kernel settings		Habilitar hack de un solo paso para QEMU
+Kernel settings	Main window		Ajustes del núcleo
 OK	Autolaunch view: add new script		Aceptar
-About…	Main window		Acerca de…
-OK	Autolaunch view: edit entry		Aceptar
-en	Main window	This is the language code of the remote user guide. If there is no translation, leave the English default.	es
-Close	Main window		Cerrar
-Do not create	Environment view		No crear
-All fields are mandatory.	Autolaunch view: edit entry		Todos los campos son obligatorios.
-Autolaunch	Main window		Inicio automático
-Disabled	Environment view		Desactivado
-Options	Main window		Opciones
+Hardware configuration	Kernel settings		Configuración del hardware
 Add file link…	Autolaunch view		Añadir enlace a archivo…
-Do not create	text editor view		No crear
-Enabled	Environment view		Activado
+Serial debug port	Kernel settings		Puerto de depuración serie
 Unknown	Autolaunch view		Desconocido
-Delete entry	Autolaunch view		Eliminar entrada
+Parallel debug output	Kernel settings		Salida de depuración paralela
 File	Autolaunch view		Archivo
-Create shell script…	Autolaunch view		Crear guion de shell…
-Edit entry	Autolaunch view: edit entry		Editar entrada
-All fields are mandatory.	Autolaunch view: add new script		Todos los campos son obligatorios.
-Error	Environment view	This will not be visible	Error
-en	Main window	This is the language code of the local user guide. If there is no translation, leave the English default.	es
-Enabled	Autolaunch view: edit entry		Activado
+Autolaunch	Main window		Inicio automático
+Logging	Kernel settings		Registro
 Create	Autolaunch view: add new script		Crear
-Open BootManager	Main window		Abrir el Gestor de arranque
-Cancel	Autolaunch view: add new script		Cancelar
-Add entry	Autolaunch view: edit entry		Añadir entrada
-Delete	Environment view		Eliminar
 Cancel	Autolaunch view: edit entry		Cancelar
 Data	Autolaunch view		Datos
-Name	Environment view		Nombre
-Name	Autolaunch view: add new script		Nombre
 Edit	Autolaunch view		Editar
-Cancel	Autolaunch view		Cancelar
-Add	Autolaunch view		Añadir
-Destination: 	Autolaunch view		Destino: 
+Do not restore	Kernel settings		No restablecer
+Use fail safe video mode (VESA/framebuffer)	Kernel settings		Usar video de modo seguro (VESA/framebuffer)
+Emergency keys (Alt+SysRq+*)	Kernel settings	Do not forget to translate the key names.	Teclas de emergencia (Alt+PetSis+*)
 Restore	text editor view		Restablecer
-Delete entry	Environment view	This will not be visible	Eliminar entrada
-Status	Environment view		Estado
-Create	Environment view		Crear
-Value	Environment view		Valor
+Debugging	Kernel settings		Depuración
 The BeOS and Haiku community members.	About box		Los miembros de la comunidad de BeOS y Haiku.
-Open file	Environment view		Abrir archivo
 Create	text editor view		Crear
-Restore to default? The current file's contents will be replaced.	text editor view		¿Desea restablecer el archivo al valor predeterminado? El archivo actual será reemplazado.
-Error	Autolaunch view	This will not be visible	Error
-Website:	About box		Sitio web:
-Cancel	Environment view		Cancelar
-Edit	Environment view		Editar
+Syslog: debug output	Kernel settings		Syslog: salida de depuración
 0.1\tInitial version.	About box		0.1\tVersión inicial.
-Do not restore	text editor view		No restablecer
-Entry missing	text editor view	This will not be visible	Entrada no existe
-Delete entry	Environment view		Eliminar entrada
-Error, an entry must be selected first.	Autolaunch view		Error, primero debe seleccionarse una entrada.
-Close	Environment view		Cerrar
-Key	Autolaunch view: edit entry		Variable
+APM support for legacy hardware	Kernel settings		Soporte de APM para hardware de legado
+Entry missing	text editor view	This will not be visible	Entrada no disponible
 Copy file…	Autolaunch view		Copiar archivo…
-Update	Autolaunch view		Actualizar
-Error, an entry must be selected first.	Environment view		Error, primero debe seleccionarse una entrada.
-Symlink	Autolaunch view		Enlace simbólico
-Start-up items editor.	About box		Editor de elementos del inicio del sistema.
-Add	Environment view		Añadir
-Save	text editor view		Guardar
-Value	Autolaunch view: edit entry		Valor
+Disable multiprocessor support	Kernel settings		Deshabilitar soporte multiprocesador
+Enable Kernel Debugging Land	Kernel settings		Habilitar el Kernel Debugging Land
 Go to	Main window		Ir a
 StartUp	System name		Inicio
-Delete	Autolaunch view		Eliminar
-Help topics	Main window		Temas de ayuda
-Boot Loader	Main window		Cargador de arranque
-Default	Environment view		Predeterminado
 Open folder	Autolaunch view		Abrir carpeta
-Bash and scripting	Main window		Bash y scripting
-Close	Autolaunch view		Cerrar
-Entry missing	Environment view	This will not be visible	Entrada no existe
+Bash and scripting	Main window		Bash y guiones
 Check README for more information.	About box		Consulte el archivo README para más información.
-Delete entry	Autolaunch view	This will not be visible	Eliminar entrada
-Directory	Autolaunch view		Carpeta
 Restore?	text editor view	This will not be visible	¿Restablecer?
-This file currently does not exist. Do you want to create it?	Environment view		Este archivo aún no existe. ¿Desea crearlo?
-Cafeina (original author)	About box		Cafeina (autor original)
-Do you want to delete this entry?	Autolaunch view		¿Desea eliminar esta entrada?
-Update	Environment view		Actualizar
 Save	Autolaunch view: edit entry		Guardar
-Read only	text editor view		Sólo lectura
-Do you want to delete this entry?	Environment view		¿Desea eliminar esta entrada?
 Shell	Autolaunch view: add new script		Shell
 Reset	text editor view		Restablecer
 This file currently does not exist. Do you want to create it?	text editor view		Este archivo aún no existe. ¿Desea crearlo?
+0.2\tKernel settings options added.	About box		0.2\tAñadidas opciones de configuración del kernel.
+Bochs debug output	Kernel settings		Salida de depuración de Bochs
+Restore default	Kernel settings	This will not be visible	Restablecer predeterminados
+Disabled. Click to enable and use custom value.	Kernel settings		Deshabilitado. Hacer clic para habilitar y usar un valor personalizado.
+Serial debug output	Kernel settings		Salida de depuración serie
+Serial debug speed	Kernel settings		Velocidad de la depuración serie
+Error	Autolaunch view: add new script	This will not be visible	Error
+Miscellaneous	Kernel settings		Varios
+Open in editor	text editor view		Abrir en editor
+The new script could not be created	Autolaunch view: add new script		No se pudo crear el nuevo archivo de guion
+Type	Autolaunch view		Tipo
+About…	Main window		Acerca de…
+Enabled. Click to disable and use automatic value.	Kernel settings		Habilitado. Hacer clic para deshabilitar y usar el valor automático.
+9600 bit/s	Kernel settings		9600 bit/s
+Close	Main window		Cerrar
+en	Main window	This is the language code of the remote user guide. If there is no translation, leave the English default.	es
+Options	Main window		Opciones
+Do not create	text editor view		No crear
+Delete entry	Autolaunch view		Eliminar entrada
+Load kernel symbols	Kernel settings		Cargar símbolos del núcleo
+Create shell script…	Autolaunch view		Crear guion de shell…
+Edit entry	Autolaunch view: edit entry		Editar entrada
+All fields are mandatory.	Autolaunch view: add new script		Todos los campos son obligatorios.
+Syslog: buffer size	Kernel settings		Syslog: tamaño del búfer
+en	Main window	This is the language code of the local user guide. If there is no translation, leave the English default.	es
+Open BootManager	Main window		Abrir el Gestor de arranque
+Cancel	Autolaunch view: add new script		Cancelar
+Syslog: include time stamps	Kernel settings		Syslog: incluir marcas de tiempo
+Name	Autolaunch view: add new script		Nombre
+Syslog: max size	Kernel settings		Syslog: tamaño máximo
+Cancel	Autolaunch view		Cancelar
+Add	Autolaunch view		Añadir
+Destination: 	Autolaunch view		Destino: 
+115200 bit/s	Kernel settings		115200 bit/s
+Error	Autolaunch view	This will not be visible	Error
+Restore to default? The current file's contents will be replaced.	text editor view		¿Desea restablecer el archivo al valor predeterminado? El archivo actual será reemplazado.
+Website:	About box		Sitio web:
+ACPI support for modern hardware	Kernel settings		Soporte de ACPI para hardware moderno
+Do not restore	text editor view		No restaurar
+Error, an entry must be selected first.	Autolaunch view		Error, primero debe seleccionar una entrada.
+Do you want to restore kernel settings default values?	Kernel settings		¿Desea restablecer los ajustes del núcleo a sus valores predeterminados?
+Update	Autolaunch view		Actualizar
+57600 bit/s	Kernel settings		57600 bit/s
+Symlink	Autolaunch view		Enlace simbólico
+Start-up items editor.	About box		Editor de elementos del inicio del sistema.
+Save	text editor view		Guardar
+Delete	Autolaunch view		Eliminar
+38400 bit/s	Kernel settings		38400 bit/s
+Help topics	Main window		Temas de ayuda
+Boot Loader	Main window		Cargador de arranque
+Close	Autolaunch view		Cerrar
+Restore	Kernel settings		Restablecer
+Delete entry	Autolaunch view	This will not be visible	Eliminar entrada
+19200 bit/s	Kernel settings		19200 bit/s
+Directory	Autolaunch view		Carpeta
+Disable IO-APIC	Kernel settings		Deshabilitar IO-APIC
+Do you want to delete this entry?	Autolaunch view		¿Desea eliminar esta entrada?
+Cafeina (original author)	About box		Cafeina (autor original)
+Read only	text editor view		Sólo lectura
 Disabling components of packages	Main window		Deshabilitar componentes de los paquetes
 Update	text editor view		Actualizar
-Profile environment	Main window		Entorno del perfil
 Edit entry	Autolaunch view: add new script		Editar entrada
-Error	Autolaunch view: add new script	This will not be visible	Error
-Open in editor	text editor view		Abrir en editor
+Ignore all the memory beyond 4 GB	Kernel settings		Ignorar toda la memoria más allá de 4 GB
+User scripts	Main window		Guiones del usuario
+

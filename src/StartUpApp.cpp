@@ -6,20 +6,32 @@
 #include "StartUpApp.h"
 #include "DataLoader.h"
 
-StartUpApp::StartUpApp(bool experimental)
-: BApplication(kAppSignature), _exp(experimental)
+StartUpApp::StartUpApp()
+: BApplication(kAppSignature)
 {
-    if(load_userbootscript(&ubsdata) != B_OK)
+    if(userscript_load("UserBootscript", &ubsdata) != B_OK)
         fprintf(stderr, "UBS not loaded\n");
 
-    if(load_userautolaunch(autolaunch_list) != B_OK)
-        fprintf(stderr, "UBS autolaunch not loaded\n");
+    if(userscript_load("UserShutdownScript", &ussdata) != B_OK)
+        fprintf(stderr, "USS not loaded\n");
 
-    if(load_usersetupenvironment(environment_list) != B_OK)
-        fprintf(stderr, "UserEnv not loaded\n");
+    if(userscript_load("UserShutdownFinishScript", &usfdata) != B_OK)
+        fprintf(stderr, "USFS not loaded\n");
 
-    if(load_usertermprofileenv(&profdata) != B_OK)
+    if(autolaunch_load(autolaunch_list) != B_OK)
+        fprintf(stderr, "Autolaunch not loaded\n");
+
+    if(userscript_load("UserSetupEnvironment", &usedata) != B_OK)
+        fprintf(stderr, "USE not loaded\n");
+
+    if(termprofile_load(&profdata) != B_OK)
         fprintf(stderr, "\"profile\" file not loaded\n");
+
+    if(kernelsettings_load(&kernelsettings_list) != B_OK) {
+        fprintf(stderr, "\"kernelsettings\" not loaded\n");
+        kernelsettings_create();
+        kernelsettings_load(&kernelsettings_list);
+    }
 
     win = new StartUpWin();
     win->Show();
@@ -73,6 +85,7 @@ void StartUpApp::AboutRequested()
 		NULL
 	};
 	const char* history[] = {
+        B_TRANSLATE("0.2\tKernel settings options added."),
 		B_TRANSLATE("0.1\tInitial version."),
 		NULL
 	};
@@ -95,17 +108,32 @@ BString StartUpApp::CurrentUBS()
     return ubsdata;
 }
 
+BString StartUpApp::CurrentUSS()
+{
+    return ussdata;
+}
+
+BString StartUpApp::CurrentUSF()
+{
+    return usfdata;
+}
+
 std::vector<autolaunch_entry> StartUpApp::CurrentALList()
 {
     return autolaunch_list;
 }
 
-std::vector<environment_entry> StartUpApp::CurrentUserEnv()
+BString StartUpApp::CurrentUserEnv()
 {
-    return environment_list;
+    return usedata;
 }
 
 BString StartUpApp::CurrentProfileEnv()
 {
     return profdata;
+}
+
+std::vector<entry> StartUpApp::CurrentKernelSettings()
+{
+    return kernelsettings_list;
 }

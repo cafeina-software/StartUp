@@ -3,8 +3,10 @@
 
 #include <InterfaceKit.h>
 #include "AutolaunchView.h"
+#include "KernelSettingsView.h"
 #include "TextEditorView.h"
-#include "EnvironmentView.h"
+#include "UserScriptsView.h"
+// #include "EnvironmentView.h"
 
 class StartUpWin : public BWindow
 {
@@ -20,9 +22,11 @@ private:
                            *helpMenu;
     BMenuField             *optionsMenuField;
     AutolaunchView         *alview;
+    UserScriptsView        *usview;
     TextEditorView         *ubsview,
                            *termenvview;
-    EnvironmentView        *envview;
+    // EnvironmentView        *envview;
+    KernelSettingsView     *kernview;
 };
 
 #endif /* __STARTUP_WIN_H */

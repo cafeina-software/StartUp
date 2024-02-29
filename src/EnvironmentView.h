@@ -18,7 +18,7 @@ class EditEnvWindow;
 class EnvironmentView : public BView
 {
 public:
-        EnvironmentView     (const char* title, std::vector<environment_entry> entrylist);
+        EnvironmentView     (const char* title, std::vector<entry> entrylist);
     virtual
         ~EnvironmentView    ();
     virtual void
@@ -30,7 +30,7 @@ public:
     void
         _Update             ();
 private:
-    std::vector<environment_entry>  _list;
+    std::vector<entry>  _list;
     BRow                           *current;
 
     BColumnListView                *environmentView;
@@ -47,7 +47,7 @@ private:
 class EditEnvWindow : public BWindow
 {
 public:
-        EditEnvWindow       (BView* parent, std::vector<environment_entry>* plist, BRow* target = NULL);
+        EditEnvWindow       (BView* parent, std::vector<entry>* plist, BRow* target = NULL);
     virtual void
         MessageReceived     (BMessage* msg);
     void
@@ -61,7 +61,7 @@ private:
     BView        *_parent;
     BRow         *_target;
 
-    std::vector<environment_entry>* _plist;
+    std::vector<entry>* _plist;
 
     bool          enabled;
     BString       key;

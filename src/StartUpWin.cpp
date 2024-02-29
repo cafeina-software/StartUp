@@ -6,27 +6,28 @@
 
 #include "StartUpWin.h"
 #include "AutolaunchView.h"
+#include "KernelSettingsView.h"
 #include "StartUpApp.h"
-#include "TextEditorView.h"
-#include "EnvironmentView.h"
+#include "UserScriptsView.h"
+// #include "TextEditorView.h"
+// #include "EnvironmentView.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Main window"
 
 StartUpWin::StartUpWin()
-: BWindow(BRect(0,0,1000,550), B_TRANSLATE_SYSTEM_NAME("StartUp"), B_TITLED_WINDOW,
+: BWindow(BRect(0,0,1000,600), B_TRANSLATE_SYSTEM_NAME("StartUp"), B_TITLED_WINDOW,
     B_CLOSE_ON_ESCAPE | B_QUIT_ON_WINDOW_CLOSE | B_ASYNCHRONOUS_CONTROLS)
 {
     struct tabsdata {
         const char* name;
         uint32 message;
     } tabs [] = {
-        { B_TRANSLATE("Autolaunch"),          'tab0' },
-        { B_TRANSLATE("Profile environment"), 'tab1' },
-        { "UserBootscript",                   'tab2' },
-        { "UserSetupEnvironment",             'tab3' }
+        { B_TRANSLATE("Autolaunch"),           'tab0' },
+        { B_TRANSLATE("Terminal environment"), 'tab1' },
+        { B_TRANSLATE("User scripts"),         'tab2' },
+        { B_TRANSLATE("Kernel settings"),      'tab3' }
     };
-
     SetSizeLimits(550, B_SIZE_UNLIMITED, 550, B_SIZE_UNLIMITED);
 
     BMenu* helpMenu = new BMenu(B_TRANSLATE("Help topics"), B_ITEMS_IN_COLUMN);
@@ -47,16 +48,16 @@ StartUpWin::StartUpWin()
 
     alview = new AutolaunchView(tabs[0].name, ((StartUpApp*)be_app)->CurrentALList());
     termenvview = new TextEditorView(tabs[1].name, ((StartUpApp*)be_app)->CurrentProfileEnv(),USER_PROF_ENV);
-    ubsview = new TextEditorView(tabs[2].name, ((StartUpApp*)be_app)->CurrentUBS(), USER_UBS);
-    envview = new EnvironmentView(tabs[3].name, ((StartUpApp*)be_app)->CurrentUserEnv());
+    usview = new UserScriptsView(tabs[2].name, ((StartUpApp*)be_app)->CurrentUBS(),
+        ((StartUpApp*)be_app)->CurrentUSS(), ((StartUpApp*)be_app)->CurrentUSF(), ((StartUpApp*)be_app)->CurrentUserEnv());
+    kernview = new KernelSettingsView(tabs[3].name, ((StartUpApp*)be_app)->CurrentKernelSettings());
 
     tabView = new BTabView("tabs", B_WIDTH_FROM_LABEL);
     tabView->SetBorder(B_NO_BORDER);
     tabView->AddTab(alview);
     tabView->AddTab(termenvview);
-    tabView->AddTab(ubsview);
-    if(((StartUpApp*)be_app)->UnstableFeaturesEnabled())
-        tabView->AddTab(envview);
+    tabView->AddTab(usview);
+    tabView->AddTab(kernview);
 
     for (int tabindex = 0; tabindex < tabView->CountTabs(); tabindex++)
         tabSelectionMenu->AddItem(new BMenuItem(tabs[tabindex].name, new BMessage(tabs[tabindex].message)));

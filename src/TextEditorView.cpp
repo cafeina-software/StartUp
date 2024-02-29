@@ -6,9 +6,9 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "text editor view"
 
-TextEditorView::TextEditorView(const char* title, BString data, const char* filename)
+TextEditorView::TextEditorView(const char* title, BString data, const char* what)
 : BView(BRect(), title, B_FOLLOW_ALL, B_ASYNCHRONOUS_CONTROLS),
-  indata(data), targetfile(filename), readonly(false)
+  indata(data), targetfile(what), readonly(false)
 {
     ckreadonly = new BCheckBox("cb_editable", B_TRANSLATE("Read only"), new BMessage(TEV_RDONLY));
     ckreadonly->SetValue(B_CONTROL_OFF);
@@ -22,9 +22,10 @@ TextEditorView::TextEditorView(const char* title, BString data, const char* file
     font.SetFace(B_BOLD_FACE);
     const rgb_color black = {0,0,0};
     textview = new BTextView("", &font, &black, B_WILL_DRAW | B_FRAME_EVENTS | B_PULSE_NEEDED | B_INPUT_METHOD_AWARE);
-    textview->SetText(indata.String());
     textview->MakeEditable(!readonly);
-    BScrollView *sctv = new BScrollView("sctextview", textview, 0, true, true, B_FANCY_BORDER);
+    BScrollView *sctv = new BScrollView("sctextview", textview, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
+
+    _Init();
 
     BLayoutBuilder::Group<>(this, B_HORIZONTAL)
         .Add(sctv)
@@ -43,6 +44,17 @@ TextEditorView::TextEditorView(const char* title, BString data, const char* file
 
 TextEditorView::~TextEditorView()
 {
+}
+
+void TextEditorView::_Init()
+{
+    textview->SetText(indata.String());
+}
+
+void TextEditorView::_Update()
+{
+    userscript_load(targetfile, &indata);
+    _Init();
 }
 
 void TextEditorView::AttachedToWindow()
@@ -86,12 +98,12 @@ void TextEditorView::MessageReceived(BMessage* msg)
             textview->MakeEditable(!readonly);
             break;
         case TEV_SAVE:
-            if(save_data((void*)targetfile, textview->Text(), textview->TextLength()) != B_OK)
+            if(userscript_save(targetfile, BString(textview->Text())) != B_OK)
                 fprintf(stderr, "Error: file %s could not be saved.\n", targetfile);
+            _Update();
             break;
         case TEV_UPDATE:
-            load_data((void*)targetfile, &indata);
-            textview->SetText(indata.String());
+            _Update();
             break;
         case TEV_RESTORE:
         {
@@ -103,10 +115,11 @@ void TextEditorView::MessageReceived(BMessage* msg)
             if(result == 0)
                 break;
 
-            get_default_data((void*)targetfile, &indata);
+            userscript_default(targetfile, &indata);
             textview->Delete();
             textview->SetText(indata.String());
-            save_data((void*)targetfile, textview->Text(), textview->TextLength());
+            userscript_save(targetfile, BString(textview->Text()));
+            _Update();
             break;
         }
         case TEV_OPENEXT:
@@ -119,7 +132,7 @@ void TextEditorView::MessageReceived(BMessage* msg)
                 int32 result = alert->Go();
                 if(result == 0)
                     break;
-                status_t status = create_file_data((void*)targetfile);
+                status_t status = userscript_create(targetfile);
                 if(status != B_OK)
                     fprintf(stderr, "Error: file USE could not be created.\n");
             }

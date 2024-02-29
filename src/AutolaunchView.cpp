@@ -155,7 +155,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
                 BPath path;
                 entry.GetPath(&path);
                 BString origin(path.Path());
-                if(create_userautolaunch_link(origin) == B_OK)
+                if(autolaunch_create_link(origin) == B_OK)
                     _Update();
             }
             break;
@@ -176,7 +176,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
                 BPath path;
                 entry.GetPath(&path);
                 BString origin(path.Path());
-                if(copy_to_userautolaunch(origin) == B_OK)
+                if(autolaunch_copy_file(origin) == B_OK)
                     _Update();
                 else
                     fprintf(stderr, "Something went wrong with the copying procedure.\n");
@@ -248,7 +248,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
 void AutolaunchView::_Update()
 {
     _list.clear();
-    load_userautolaunch(_list);
+    autolaunch_load(_list);
     alListView->Clear();
     _Init();
 }
@@ -363,7 +363,7 @@ void NewScriptWindow::MessageReceived(BMessage* msg)
         case 'save':
         {
             if(name.Length() > 0 && shell.Length() > 0) {
-                status_t status = create_sh_script_userautolaunch(name, shell);
+                status_t status = autolaunch_create_shell(name, shell);
                 if(status == B_OK) {
                     BString scriptpath(USER_AUTOLAUNCH_DIR);
                     scriptpath.Append("/").Append(name).Append(".sh");

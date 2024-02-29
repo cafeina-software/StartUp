@@ -1,15 +1,17 @@
-#include "DataLoader.h"
+#include <Roster.h>
 #include <StorageKit.h>
-#include <AppKit.h>
-#include <cstdio>
-#include <iostream>
+#include <SupportKit.h>
 #include <regex>
+#include <cctype>
 #include <string>
 #include <sstream>
 #include <vector>
 
+#include "DataLoader.h"
+
 node_flavor entry_type(BEntry entry);
 bool is_space(char c);
+bool is_string_digit(const char* in);
 status_t load_data_from_file(const char* in_filename, BString *out_data);
 status_t save_data_to_file(const char* in_filename, const char* in_data, int in_length);
 
@@ -31,60 +33,33 @@ bool exists(const char* filename)
     return entry.Exists();
 }
 
-status_t create_file_data(void* in_what)
+bool find_entry(const char* in_data, const char* pattern, entry* out_data)
 {
-	status_t status = B_OK;
+	bool result = false;
 
-    if(strcmp(reinterpret_cast<const char*>(in_what), USER_UBS) == 0)
-        status = create_userbootscript();
-    else if(strcmp(reinterpret_cast<const char*>(in_what), USER_PROF_ENV) == 0)
-        status = create_usertermprofileenv();
-    else {
-        status = B_ENTRY_NOT_FOUND;
-    }
+	std::istringstream iss(in_data);
+	std::string line;
+	std::smatch match;
+	std::regex rgx(pattern);
 
-    return status;
+	while(std::getline(iss, line)) {
+		if(std::regex_search(line, rgx)) {
+			if(std::regex_search(line, match, rgx)) {
+				result = true;
+				if(out_data != NULL) {
+					if(match[1].str() == "#")
+						out_data->enabled = false;
+					else
+						out_data->enabled = true;
+					out_data->key = match[2].str().c_str();
+                    out_data->value = match[3].str().c_str();
+				}
+			}
+		}
+	}
+	return result;
 }
 
-void get_default_data(void* in_what, BString* out_data)
-{
-    if(strcmp(reinterpret_cast<const char*>(in_what), USER_UBS) == 0)
-        default_userbootscript(out_data);
-    else if(strcmp(reinterpret_cast<const char*>(in_what), USER_PROF_ENV) == 0)
-        default_usertermprofileenv(out_data);
-    else
-        *out_data = "";
-}
-
-status_t load_data(void* in_what, BString* out_data)
-{
-   status_t status = B_OK;
-
-    if(strcmp(reinterpret_cast<const char*>(in_what), USER_UBS) == 0)
-        status = load_userbootscript(out_data);
-    else if(strcmp(reinterpret_cast<const char*>(in_what), USER_PROF_ENV) == 0)
-        status = load_usertermprofileenv(out_data);
-    else {
-        *out_data = "";
-        status = B_ENTRY_NOT_FOUND;
-    }
-
-    return status;
-}
-
-status_t save_data(void* in_what, const char* in_data, int length)
-{
-    status_t status = B_OK;
-
-    if(strcmp(reinterpret_cast<const char*>(in_what), USER_UBS) == 0)
-        status = save_userbootscript(in_data, length);
-    else if(strcmp(reinterpret_cast<const char*>(in_what), USER_PROF_ENV) == 0)
-        status = save_usertermprofileenv(in_data, length);
-    else
-        status = B_ENTRY_NOT_FOUND;
-
-    return status;
-}
 
 // #pragma mark - Helper functions
 
@@ -103,6 +78,18 @@ node_flavor entry_type(BEntry entry)
 bool is_space(char c)
 {
     return c == ' ';
+}
+
+bool is_string_digit(const char* in)
+{
+    bool result = true;
+
+    const unsigned char* i = (const unsigned char*)in;
+    while(*i != '\0' && isdigit(*i))
+        ++i;
+    if(*i != '\0')
+        result = false;
+    return result;
 }
 
 status_t load_data_from_file(const char* in_filename, BString *out_data)
@@ -131,64 +118,20 @@ status_t save_data_to_file(const char* in_filename, const char* in_data, int in_
 	if((status = file.InitCheck()) != B_OK)
 		return status;
 
-	if((dataread = file.Write((void*)in_data, in_length)) < 0)
+	if((dataread = file.Write((void*)in_data, in_length)) != in_length) {
+        fprintf(stderr, "%s: Error: not all the data was written. Expected data: %d. Data written: %zd.\n",
+            __func__, in_length, dataread);
 		return B_ERROR;
+    }
+
+	file.Unset();
 
 	return B_OK;
 }
 
-// #pragma mark - UserBootscript
-
-status_t create_userbootscript()
-{
-	BString data;
-	default_userbootscript(&data);
-	size_t size = strlen(data.String());
-	return save_userbootscript(data.String(), size);
-}
-
-status_t load_userbootscript(BString* data)
-{
-    return load_data_from_file(USER_UBS, data);
-}
-
-void default_userbootscript(BString* data)
-{
-    data->SetTo("");
-    data->Append("#!/bin/sh\n")
-         .Append("\n")
-         .Append("# DO NOT EDIT!\n")
-         .Append("#=====================================================================\n")
-         .Append("# Start programs and open files in the boot launch folder\n")
-         .Append("for file in $HOME/config/settings/boot/launch/* \n")
-         .Append("do \n")
-         .Append("	/bin/open \"$file\" &\n")
-         .Append("done\n")
-         .Append("#=====================================================================\n")
-         .Append("# FEEL FREE TO EDIT BELOW\n")
-         .Append("\n")
-         .Append("# Add custom commands to execute at every startup here.\n")
-         .Append("\n")
-         .Append("# This file is a standard bash script. For more information regarding shell \n")
-         .Append("# scripts, refer to any online documentation for \"bash scripting\"\n")
-         .Append("\n")
-         .Append("# During boot, the commands listed in this script will be executed.\n")
-         .Append("# Typically, you will want to include a trailing '&' on each line.\n")
-         .Append("# This will allow the script to execute that command and process the next line.\n")
-         .Append("\n")
-         .Append("# To launch certain applications at boot-up, put links to those applications in\n")
-         .Append("# the above boot launch directory.\n")
-         .Append("\n");
-}
-
-status_t save_userbootscript(const char* data, int length)
-{
-    return save_data_to_file(USER_UBS, data, length);
-}
-
 // #pragma mark - Autolaunch
 
-status_t load_userautolaunch(std::vector<autolaunch_entry>& entrylist)
+status_t autolaunch_load(std::vector<autolaunch_entry>& entrylist)
 {
     BDirectory autolaunchdir(USER_AUTOLAUNCH_DIR);
     BEntry entry;
@@ -231,7 +174,7 @@ status_t load_userautolaunch(std::vector<autolaunch_entry>& entrylist)
     return B_OK;
 }
 
-status_t create_userautolaunch_link(BString origin)
+status_t autolaunch_create_link(BString origin)
 {
     BFile file(origin, B_READ_ONLY);
     if(file.InitCheck() != B_OK)
@@ -252,7 +195,7 @@ status_t create_userautolaunch_link(BString origin)
     return B_OK;
 }
 
-status_t copy_to_userautolaunch(BString origin)
+status_t autolaunch_copy_file(BString origin)
 {
     status_t status = B_OK;
 
@@ -296,7 +239,7 @@ status_t copy_to_userautolaunch(BString origin)
     return status;
 }
 
-status_t create_sh_script_userautolaunch(BString name, BString shell)
+status_t autolaunch_create_shell(BString name, BString shell)
 {
     status_t status = B_OK;
 
@@ -322,220 +265,195 @@ status_t create_sh_script_userautolaunch(BString name, BString shell)
     return status;
 }
 
-// #pragma mark - UserSetupEnvironment
+// #pragma mark - User scripts
 
-status_t load_usersetupenvironment(std::vector<environment_entry>& entrylist)
+status_t userscript_create(BString what)
 {
-    status_t status = B_OK;
-
-    BFile usenvfile(USER_USENV, B_READ_ONLY);
-    if((status = usenvfile.InitCheck()) != B_OK) {
-        fprintf(stderr, "There is no current UserSetupEnvironment.\n");
-        return status;
-    }
-
-    off_t size;
-    usenvfile.GetSize(&size);
     BString buffer;
-    usenvfile.Read(buffer.LockBuffer(size), size);
-
-    std::stringstream strbuffer(buffer.String());
-    std::string line;
-    // std::regex envvar_rgx("^(#)?\\s*export\\s+(\\w+)\\s*=\\s*(\"([^\"]*)\"|\\S+)\\s*$");
-    std::regex envvar_rgx("^(#)?\\s*export\\s+(\\w+)\\s*=\\s*(?:\"?([^\"]*)\"?)\\s*$");
-    environment_entry entry;
-
-    while(std::getline(strbuffer, line)) {
-        if(std::regex_match(line, envvar_rgx)) {
-            std::smatch match;
-            if(std::regex_search(line, match, envvar_rgx)) {
-                if(match[1].str() == "#") {
-                    entry.enabled = false;
-                    entry.name = match[2].str().c_str();
-                    entry.value = match[3].str().c_str();
-                }
-                else {
-                    entry.enabled = true;
-                    entry.name = match[2].str().c_str();
-                    entry.value = match[3].str().c_str();
-                }
-                entrylist.push_back(entry);
-            }
-        }
-        else
-            fprintf(stderr, "Regex failed in match.\n");
-    }
-
-    return status;
+    userscript_default(what, &buffer);
+    return userscript_save(what, buffer);
 }
 
-status_t add_to_usersetupenvironment(environment_entry entry, std::vector<environment_entry>& entrylist)
+void userscript_default(BString what, BString* out_data)
+{
+    out_data->SetTo("");
+
+    if(what == "UserBootscript") {
+        out_data->Append("#!/bin/sh\n")
+                 .Append("\n")
+                 .Append("# DO NOT EDIT!\n")
+                 .Append("#=====================================================================\n")
+                 .Append("# Start programs and open files in the boot launch folder\n")
+                 .Append("for file in $HOME/config/settings/boot/launch/* \n")
+                 .Append("do \n")
+                 .Append("	/bin/open \"$file\" &\n")
+                 .Append("done\n")
+                 .Append("#=====================================================================\n")
+                 .Append("# FEEL FREE TO EDIT BELOW\n")
+                 .Append("\n")
+                 .Append("# Add custom commands to execute at every startup here.\n")
+                 .Append("\n")
+                 .Append("# This file is a standard bash script. For more information regarding shell \n")
+                 .Append("# scripts, refer to any online documentation for \"bash scripting\"\n")
+                 .Append("\n")
+                 .Append("# During boot, the commands listed in this script will be executed.\n")
+                 .Append("# Typically, you will want to include a trailing '&' on each line.\n")
+                 .Append("# This will allow the script to execute that command and process the next line.\n")
+                 .Append("\n")
+                 .Append("# To launch certain applications at boot-up, put links to those applications in\n")
+                 .Append("# the above boot launch directory.\n")
+                 .Append("\n");
+    }
+    else if(what == "UserSetupEnvironment") {
+        out_data->Append("# Quick start for file UserSetupEnvironment.  Copy or rename this file as\n")
+                 .Append("#	\"/boot/home/config/settings/boot/UserSetupEnvironment\".\n")
+                 .Append("# Add custom environment variables to initialize\n")
+                 .Append("# This file is a standard bash script.  For more information regarding shell\n")
+                 .Append("# scripts, refer to any online documentation for \"bash scripting\"\n")
+                 .Append("\n")
+                 .Append("# Set important variables\n")
+                 .Append("# export IS_COMPUTER_ON=1\n")
+                 .Append("\n");
+    }
+}
+
+status_t userscript_load(BString what, BString* out_data)
+{
+    BString filepath("/boot/home/config/settings/boot/");
+    filepath.Append(what);
+    return load_data_from_file(filepath.String(), out_data);
+}
+
+status_t userscript_save(BString what, BString in_data)
+{
+    BString filepath("/boot/home/config/settings/boot/");
+    filepath.Append(what);
+    int length = strlen(in_data.String());
+    return save_data_to_file(filepath.String(), in_data.String(), length);
+}
+
+
+// #pragma mark - Terminal profile
+
+status_t termprofile_create()
+{
+    BString buffer;
+    termprofile_default(&buffer);
+    return save_data_to_file(USER_PROF_ENV, buffer.String(), strlen(buffer.String()));
+}
+
+void termprofile_default(BString *out_data)
+{
+    *out_data = "";
+}
+
+status_t termprofile_load(BString *out_data)
+{
+    return load_data_from_file(USER_PROF_ENV, out_data);
+}
+
+status_t termprofile_save(BString in_data)
+{
+    return save_data_to_file(USER_PROF_ENV, in_data.String(), strlen(in_data.String()));
+}
+
+// #pragma mark - Kernel settings
+
+status_t kernelsettings_create()
+{
+    if(exists(KERNEL_SETTINGS))
+        return B_FILE_EXISTS;
+
+    std::vector<entry> entrylist;
+    kernelsettings_default(&entrylist);
+    return kernelsettings_save(entrylist);
+}
+
+void kernelsettings_default(std::vector<entry>* out_data)
+{
+    out_data->push_back({false, "disable_smp", "true"});
+    out_data->push_back({false, "disable_ioapic", "true"});
+    out_data->push_back({false, "apm", "true"});
+    out_data->push_back({false, "acpi", "false"});
+    out_data->push_back({false, "4gb_memory_limit", "true"});
+    out_data->push_back({false, "fail_safe_video_mode", "true"});
+    out_data->push_back({false, "bluescreen", "false"});
+    out_data->push_back({true, "load_symbols", "true"});
+    out_data->push_back({false, "emergency_keys", "false"});
+    out_data->push_back({false, "serial_debug_output", "false"});
+    out_data->push_back({false, "serial_debug_port", "1"});
+    out_data->push_back({false, "serial_debug_speed", "57600"});
+    out_data->push_back({false, "syslog_debug_output", "false"});
+    out_data->push_back({false, "syslog_buffer_size", "131768"});
+    out_data->push_back({false, "syslog_time_stamps", "true"});
+    out_data->push_back({false, "syslog_max_size", "20MB"});
+    out_data->push_back({false, "bochs_debug_output", "true"});
+    out_data->push_back({false, "laplinkll_debug_output", "true"});
+    out_data->push_back({false, "qemu_single_step_hack", "true"});
+}
+
+status_t kernelsettings_load(std::vector<entry>* entrylist)
 {
     status_t status = B_OK;
-    bool needQuoting = false, needEOL = false;
-
-    BFile file(USER_USENV, B_READ_WRITE | B_CREATE_FILE | B_OPEN_AT_END);
-    if((status = file.InitCheck()) != B_OK)
-        return status;
-
-    const char* str = entry.value.String();
-    while(*str != '\0' && !is_space(*str))
-        str++;
-    if(*str != '\0')
-        needQuoting = true;
-
-    char lastchar;
-    file.Seek(-1, SEEK_END);
-    file.Read(&lastchar, 1);
-    if(lastchar != '\n')
-        needEOL = true;
 
     BString buffer;
-    buffer.Append(needEOL ? "\n" : "" )
-          .Append(entry.enabled ? "" : "# ")
-          .Append("export ")
-          .Append(entry.name)
-          .Append("=")
-          .Append(needQuoting ? "\"" : "" )
-          .Append(entry.value)
-          .Append(needQuoting ? "\"" : "" )
-          .Append("\n");
-    off_t position = file.Position();
-    size_t size = buffer.Length();
-    file.WriteAt(position, buffer, size);
+    status = load_data_from_file(KERNEL_SETTINGS, &buffer);
+    if(status != B_OK)
+        return B_ERROR;
 
-    return status;
-}
+    bool result;
+    std::vector<const char*> keys = {"disable_smp", "disable_ioapic", "apm",
+        "acpi", "4gb_memory_limit", "fail_safe_video_mode", "bluescreen",
+        "load_symbols", "emergency_keys", "serial_debug_output", "serial_debug_port",
+        "serial_debug_speed", "syslog_debug_output", "syslog_buffer_size",
+        "syslog_time_stamps", "syslog_max_size", "bochs_debug_output",
+        "laplinkll_debug_output", "qemu_single_step_hack"};
+    for(const auto& key : keys) {
+        BString regex_str;
+        regex_str.Append("^(#)?\\s*(").Append(key).Append(")\\s+(\\w+)\\s*$");
 
-status_t edit_entry_usersetupenvironment(BString key, environment_entry newdata, std::vector<environment_entry>& entrylist)
-{
-    status_t status = B_OK;
-
-    fprintf(stderr, "New key to set: %s. New value: %s.\n", newdata.name.String(), newdata.value.String());
-    BFile file(USER_USENV, B_READ_WRITE);
-    if((status = file.InitCheck()) != B_OK)
-        return status;
-
-    off_t size;
-    file.GetSize(&size);
-    char* buffer = new char[size +1];
-    file.Read(buffer, size);
-    buffer[size] = '\0';
-
-    std::stringstream iss(buffer);
-    std::stringstream oss;
-    std::string line;
-    std::string rgx_str("^(#)?\\s*export\\s+");
-    rgx_str.append(key).append("\\s*=\\s*(?:\"?([^\"]*)\"?)\\s*$");
-    std::regex _rgx(rgx_str);
-
-    while(std::getline(iss, line)) {
-        if(!std::regex_match(line, _rgx))
-            oss << line << std::endl;
-        else if(std::regex_match(line, _rgx)){
-            oss << (newdata.enabled ? "" : "# ")
-            << "export "
-            << newdata.name.String()
-            << "="
-            << newdata.value.String()
-            << std::endl;
-        }
+        entry e;
+        result = find_entry(buffer.String(), regex_str.String(), &e);
+        if(result)
+            entrylist->push_back({e.enabled, e.key, e.value});
     }
-
-    BString outdata(oss.str().c_str());
-    file.Seek(0, SEEK_SET);
-    file.SetTo(USER_USENV, B_READ_WRITE | B_ERASE_FILE);
-    file.Write(outdata.String(), outdata.Length());
-    file.SetSize(outdata.Length());
-    delete[] buffer;
     return status;
 }
 
-status_t delete_entry_usersetupenvironment(BString key, std::vector<environment_entry>& entrylist)
+status_t kernelsettings_entry_add (std::vector<entry>* entrylist, entry item)
 {
-    status_t status = B_OK;
-    BFile file(USER_USENV, B_READ_ONLY);
-    if((status = file.InitCheck()) != B_OK)
-        return status;
+    if(!entrylist)
+        return B_ERROR;
 
-    off_t fsize;
-    file.GetSize(&fsize);
-    char* buffer = new char[fsize +1 ];
-    file.Read(buffer, fsize);
-    buffer[fsize] = '\0';
+    entrylist->push_back({item.enabled, item.key, item.value});
+    return B_OK;
+}
 
-    std::stringstream ss(buffer);
-    std::stringstream oss;
-    std::string line;
-    std::string rgx_str("^.*");
-    rgx_str.append(key).append(".*$");
-    std::regex _rgx(rgx_str);
-    while(std::getline(ss, line)) {
-        if(!std::regex_match(line, _rgx))
-            oss << line << std::endl;
+status_t kernelsettings_entry_edit(std::vector<entry>* entrylist, const char* key, BString value, bool enabled)
+{
+    auto x = entrylist->begin();
+    while(x != entrylist->end() && strcmp(x->key, key) != 0)
+        ++x;
+    if(x != entrylist->end()) {
+        x->value = value;
+        x->enabled = enabled;
+        return B_OK;
     }
-
-    BString outdata(oss.str().c_str());
-    file.SetTo(USER_USENV, B_READ_WRITE | B_ERASE_FILE);
-    file.Write(outdata.String(), outdata.Length());
-
-    delete[] buffer;
-    return status;
+    else
+        return B_ENTRY_NOT_FOUND;
 }
 
-status_t create_usersetupenvironment()
+status_t kernelsettings_save(std::vector<entry> entrylist)
 {
-    status_t status = B_OK;
-
-    BFile file(USER_USENV, B_READ_WRITE | B_CREATE_FILE);
-    if((status = file.InitCheck()) != B_OK)
-        return status;
-
-    BString data;
-    default_usersetupenvironment(&data);
-    size_t size = strlen(data.String());
-    printf("length %ld\n", size);
-    file.Write(data.String(), size);
-    file.Unset();
-
-    return status;
-}
-
-void default_usersetupenvironment(BString *data)
-{
-    data->SetTo("");
-    data->Append("# Quick start for file UserSetupEnvironment.  Copy or rename this file as\n")
-         .Append("#	\"/boot/home/config/settings/boot/UserSetupEnvironment\".\n")
-         .Append("# Add custom environment variables to initialize\n")
-         .Append("# This file is a standard bash script.  For more information regarding shell\n")
-         .Append("# scripts, refer to any online documentation for \"bash scripting\"\n")
-         .Append("\n")
-         .Append("# Set important variables\n")
-         .Append("# export IS_COMPUTER_ON=1\n")
-         .Append("\n");
-}
-
-// #pragma mark - profile
-
-status_t create_usertermprofileenv()
-{
-	BString data;
-	default_usertermprofileenv(&data);
-	size_t size = strlen(data.String());
-	return save_usertermprofileenv(data.String(), size);
-}
-
-void default_usertermprofileenv(BString *out_data)
-{
-	*out_data = "";
-}
-
-status_t load_usertermprofileenv(BString* out_data)
-{
-	return load_data_from_file(USER_PROF_ENV, out_data);
-}
-
-status_t save_usertermprofileenv(const char* data, int length)
-{
-    return save_data_to_file(USER_PROF_ENV, data, length);
+    BString buffer;
+    for(const auto& item : entrylist) {
+        if(!item.enabled)
+            buffer.Append("#");
+        buffer.Append(item.key);
+        buffer.Append(" ");
+        buffer.Append(item.value);
+        buffer.Append("\n");
+    }
+    int length = strlen(buffer.String());
+    return save_data_to_file(KERNEL_SETTINGS, buffer.String(), length);
 }

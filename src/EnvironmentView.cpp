@@ -8,7 +8,7 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Environment view"
 
-EnvironmentView::EnvironmentView(const char* title, std::vector<environment_entry> entrylist)
+EnvironmentView::EnvironmentView(const char* title, std::vector<entry> entrylist)
 : BView(BRect(0, 0, 10, 10), title, B_FOLLOW_ALL, B_ASYNCHRONOUS_CONTROLS),
   _list(entrylist),
   current(nullptr)
@@ -71,7 +71,7 @@ void EnvironmentView::_Init()
         BRow* row = new BRow();
         // row->SetField(new BCheckBoxField(false), 0);
         row->SetField(new BStringField(enabled), 0);
-        row->SetField(new BStringField(entry.name), 1);
+        row->SetField(new BStringField(entry.key), 1);
         row->SetField(new BStringField(entry.value), 2);
         environmentView->AddRow(row);
     }
@@ -157,9 +157,9 @@ void EnvironmentView::MessageReceived(BMessage* msg)
                 int32 result = alert->Go();
                 if(result == 1) {
                     BString targetkey = ((BStringField*)environmentView->CurrentSelection()->GetField(1))->String();
-                    status_t status = delete_entry_usersetupenvironment(targetkey, _list);
-                    if(status != B_OK)
-                        fprintf(stderr, "Error: could not be deleted or something went wrong.\n");
+                    // status_t status = delete_entry_usersetupenvironment(targetkey, _list);
+                    // if(status != B_OK)
+                        // fprintf(stderr, "Error: could not be deleted or something went wrong.\n");
                     environmentView->RemoveRow(current);
                     _Update();
                 }
@@ -177,20 +177,20 @@ void EnvironmentView::MessageReceived(BMessage* msg)
         }
         case ENV_OPEN_EXT:
         {
-            if(!exists(USER_USENV)) {
-                BAlert *alert = new BAlert(B_TRANSLATE_COMMENT("Entry missing", "This will not be visible"),
-                        B_TRANSLATE("This file currently does not exist. Do you want to create it?"),
-                        B_TRANSLATE("Do not create"), B_TRANSLATE("Create"));
-                alert->SetShortcut(0, B_ESCAPE);
-                int32 result = alert->Go();
-                if(result == 0)
-                    break;
-                status_t status = create_usersetupenvironment();
-                if(status != B_OK)
-                    fprintf(stderr, "Error: file USE could not be created.\n");
-            }
-
-            launch("text/x-source-code", USER_USENV);
+            // if(!exists(USER_USENV)) {
+                // BAlert *alert = new BAlert(B_TRANSLATE_COMMENT("Entry missing", "This will not be visible"),
+                        // B_TRANSLATE("This file currently does not exist. Do you want to create it?"),
+                        // B_TRANSLATE("Do not create"), B_TRANSLATE("Create"));
+                // alert->SetShortcut(0, B_ESCAPE);
+                // int32 result = alert->Go();
+                // if(result == 0)
+                    // break;
+                // status_t status = create_usersetupenvironment();
+                // if(status != B_OK)
+                    // fprintf(stderr, "Error: file USE could not be created.\n");
+            // }
+//
+            // launch("text/x-source-code", USER_USENV);
             break;
         }
         default:
@@ -202,7 +202,7 @@ void EnvironmentView::MessageReceived(BMessage* msg)
 void EnvironmentView::_Update()
 {
     _list.clear();
-    load_usersetupenvironment(_list);
+    // load_usersetupenvironment(_list);
     environmentView->Clear();
     _Init();
     environmentView->ResizeAllColumnsToPreferred();
@@ -211,7 +211,7 @@ void EnvironmentView::_Update()
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Autolaunch view: edit entry"
 
-EditEnvWindow::EditEnvWindow(BView* parent, std::vector<environment_entry>* plist, BRow* target)
+EditEnvWindow::EditEnvWindow(BView* parent, std::vector<entry>* plist, BRow* target)
 : BWindow(BRect(100,100,400,400), "", B_FLOATING_WINDOW, B_ASYNCHRONOUS_CONTROLS),
   _parent(parent), _target(target), _plist(plist)
 {
@@ -287,20 +287,20 @@ void EditEnvWindow::MessageReceived(BMessage* msg)
         case 'save':
         {
             if(key.Length() > 0 && value.Length() > 0) {
-                environment_entry newentry;
+                entry newentry;
                 newentry.enabled = enabled;
-                newentry.name = key;
+                newentry.key = key;
                 newentry.value = value;
 
                 if(_target == NULL) {
-                    status_t status = add_to_usersetupenvironment(newentry, *_plist);
-                    if (status != B_OK)
-                        fprintf(stderr, "Error: could not be added.\n");
+                    // status_t status = add_to_usersetupenvironment(newentry, *_plist);
+                    // if (status != B_OK)
+                        // fprintf(stderr, "Error: could not be added.\n");
                 }
                 else {
-                    status_t status = edit_entry_usersetupenvironment(key, newentry, *_plist);
-                    if (status != B_OK)
-                        fprintf(stderr, "Error: could not be set.\n");
+                    // status_t status = edit_entry_usersetupenvironment(key, newentry, *_plist);
+                    // if (status != B_OK)
+                        // fprintf(stderr, "Error: could not be set.\n");
 
                 }
 

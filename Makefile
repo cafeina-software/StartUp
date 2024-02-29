@@ -37,8 +37,9 @@ SRCS = src/main.cpp               \
        src/StartUpApp.cpp         \
        src/StartUpWin.cpp         \
        src/AutolaunchView.cpp     \
-       src/EnvironmentView.cpp    \
-       src/TextEditorView.cpp
+       src/TextEditorView.cpp     \
+       src/UserScriptsView.cpp    \
+       src/KernelSettingsView.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
@@ -76,7 +77,7 @@ LIBPATHS =
 #	Additional paths to look for system headers. These use the form
 #	"#include <header>". Directories that contain the files in SRCS are
 #	NOT auto-included here.
-SYSTEM_INCLUDE_PATHS =
+SYSTEM_INCLUDE_PATHS = $(DEVEL_DIRECTORY)/headers/private/interface
 
 #	Additional paths paths to look for local headers. These use the form
 #	#include "header". Directories that contain the files in SRCS are

@@ -13,13 +13,15 @@
 class TextEditorView : public BView
 {
 public:
-        TextEditorView      (const char* tabtitle, BString data, const char* filename);
+        TextEditorView      (const char* tabtitle, BString data, const char* what);
     virtual
         ~TextEditorView     ();
     virtual void
         MessageReceived     (BMessage*);
     virtual void
         AttachedToWindow    ();
+    void _Init();
+    void _Update();
 private:
     BString     indata;
     const char *targetfile;

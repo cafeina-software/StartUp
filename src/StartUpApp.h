@@ -8,13 +8,13 @@
 
 #define kAppName "StartUp"
 #define kAppSignature "application/x-vnd.Haiku-StartUp"
-#define kAppVersionStr "0.1"
+#define kAppVersionStr "0.2.1"
 #define kAppHomePage "https://codeberg.org/cafeina/StartUp"
 
 class StartUpApp : public BApplication
 {
 public:
-        StartUpApp          (bool experimental = false);
+        StartUpApp          ();
     virtual
         ~StartUpApp         ();
     virtual bool
@@ -23,25 +23,28 @@ public:
         MessageReceived     (BMessage* msg);
     virtual void
         AboutRequested      ();
-    bool
-        UnstableFeaturesEnabled() {
-            return _exp;
-        }
     BString
         CurrentUBS          ();
+    BString
+        CurrentUSS          ();
+    BString
+        CurrentUSF          ();
     std::vector<autolaunch_entry>
         CurrentALList       ();
-    std::vector<environment_entry>
+    BString
         CurrentUserEnv      ();
     BString
         CurrentProfileEnv   ();
+    std::vector<entry> CurrentKernelSettings();
 private:
     StartUpWin                   *win;
     BString                       ubsdata;
-    BString profdata;
+    BString                       ussdata;
+    BString                       usfdata;
+    BString                       usedata;
+    BString                       profdata;
     std::vector<autolaunch_entry> autolaunch_list;
-    std::vector<environment_entry> environment_list;
-    bool _exp;
+    std::vector<entry> kernelsettings_list;
 };
 
 #endif /* __STARTUP_APP_H */
