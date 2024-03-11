@@ -11,15 +11,17 @@
 class StartUpWin : public BWindow
 {
 public:
-        StartUpWin();
-    virtual void
-        MessageReceived     (BMessage* msg);
-    void
-        OpenDocumentation   (const char* entry);
+                         StartUpWin          ();
+    virtual void         MessageReceived     (BMessage* msg);
+    status_t             LoadSettings        (BMessage* indata);
+    status_t             SaveSettings        (BMessage* outdata);
+private:
+    void                 OpenDocumentation   (const char* entry);
 private:
     BTabView               *tabView;
-    BPopUpMenu             *optionsMenu,
-                           *helpMenu;
+    BPopUpMenu             *optionsMenu;
+    BMenu                  *helpMenu,
+                           *settingsMenu;
     BMenuField             *optionsMenuField;
     AutolaunchView         *alview;
     UserScriptsView        *usview;
@@ -27,6 +29,8 @@ private:
                            *termenvview;
     // EnvironmentView        *envview;
     KernelSettingsView     *kernview;
+
+    bool                    kswarningshown;
 };
 
 #endif /* __STARTUP_WIN_H */

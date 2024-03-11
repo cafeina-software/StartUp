@@ -252,9 +252,9 @@ KernelSettingsView::KernelSettingsView(const char* title, std::vector<entry> ent
         BSize(fListView->StringWidth(B_TRANSLATE("Hardware configuration")) + 10,
         B_SIZE_UNSET));
 
-    refreshButton = new BButton("Refresh", new BMessage('updt'));
+    refreshButton = new BButton(B_TRANSLATE("Update"), new BMessage('updt'));
     refreshButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
-    resetButton = new BButton("Restore", new BMessage('rstr'));
+    resetButton = new BButton(B_TRANSLATE("Restore"), new BMessage('rstr'));
     resetButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
 
     fCardView = new BCardView();

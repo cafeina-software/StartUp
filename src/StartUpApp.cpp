@@ -34,8 +34,8 @@ StartUpApp::StartUpApp()
     }
 
     win = new StartUpWin();
+    _LoadSettings();
     win->Show();
-
 }
 
 StartUpApp::~StartUpApp()
@@ -44,6 +44,7 @@ StartUpApp::~StartUpApp()
 
 bool StartUpApp::QuitRequested()
 {
+    _SaveSettings();
     return BApplication::QuitRequested();
 }
 
@@ -137,3 +138,64 @@ std::vector<entry> StartUpApp::CurrentKernelSettings()
 {
     return kernelsettings_list;
 }
+
+// #pragma mark Private methods
+
+status_t StartUpApp::_LoadSettings()
+{
+    status_t status = B_OK;
+    BPath usrsetpath;
+    if((status = find_directory(B_USER_SETTINGS_DIRECTORY, &usrsetpath)) != B_OK) {
+        fprintf(stderr, "%s > user settings dir could not even be found\n", __func__);
+        return status;
+    }
+
+    usrsetpath.Append(kAppName ".settings");
+    BFile file(usrsetpath.Path(), B_READ_ONLY);
+    if((status = file.InitCheck()) != B_OK) {
+        fprintf(stderr, "%s > user settings file \"%s\" could not even be opened\n", __func__, usrsetpath.Path());
+        return status;
+    }
+
+    if((status = currentSettings.Unflatten(&file)) != B_OK) {
+        fprintf(stderr, "%s > settings could not be unflattened from the file \n", __func__);
+        return status;
+    }
+
+    if((status = win->LoadSettings(&currentSettings)) != B_OK) {
+        fprintf(stderr, "%s > settings could not be loaded to the window\n", __func__);
+        return status;
+    }
+
+    return status;
+}
+
+status_t StartUpApp::_SaveSettings()
+{
+    status_t status = B_OK;
+    if(win->Lock()) {
+        win->SaveSettings(&currentSettings);
+        win->Unlock();
+    }
+    BPath usrsetpath;
+    if((status = find_directory(B_USER_SETTINGS_DIRECTORY, &usrsetpath)) != B_OK) {
+        fprintf(stderr, "%s > user settings dir could not even be found\n", __func__);
+        return status;
+    }
+
+    usrsetpath.Append(kAppName ".settings");
+    BFile file(usrsetpath.Path(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
+    if((status = file.InitCheck()) != B_OK) {
+        fprintf(stderr, "%s > user settings file \"%s\" could not even be set\n", __func__, usrsetpath.Path());
+        return status;
+    }
+    file.SetPermissions(DEFFILEMODE);
+
+    if((status = currentSettings.Flatten(&file)) != B_OK) {
+        fprintf(stderr, "%s > settings could not be flattened to the file \n", __func__);
+        return status;
+    }
+
+    return status;
+}
+

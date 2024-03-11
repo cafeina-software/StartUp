@@ -39,7 +39,8 @@ SRCS = src/main.cpp               \
        src/AutolaunchView.cpp     \
        src/TextEditorView.cpp     \
        src/UserScriptsView.cpp    \
-       src/KernelSettingsView.cpp
+       src/KernelSettingsView.cpp \
+       src/CustomUI.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
