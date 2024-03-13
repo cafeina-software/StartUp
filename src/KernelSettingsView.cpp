@@ -252,6 +252,8 @@ KernelSettingsView::KernelSettingsView(const char* title, std::vector<entry> ent
         BSize(fListView->StringWidth(B_TRANSLATE("Hardware configuration")) + 10,
         B_SIZE_UNSET));
 
+    openextButton = new BButton(B_TRANSLATE("Open file"), new BMessage(KS_OPEN_EXT));
+    openextButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
     refreshButton = new BButton(B_TRANSLATE("Update"), new BMessage('updt'));
     refreshButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
     resetButton = new BButton(B_TRANSLATE("Restore"), new BMessage('rstr'));
@@ -267,6 +269,7 @@ KernelSettingsView::KernelSettingsView(const char* title, std::vector<entry> ent
         .SetInsets(B_USE_WINDOW_SPACING)
         .AddGroup(B_VERTICAL)
             .Add(listScrollView)
+            .Add(openextButton)
             .Add(refreshButton)
             .Add(resetButton)
         .End()
@@ -373,6 +376,7 @@ void KernelSettingsView::AttachedToWindow()
 {
     fListView->SetTarget(this);
     // fCardView->SetTarget(this);
+    openextButton->SetTarget(this);
     refreshButton->SetTarget(this);
     resetButton->SetTarget(this);
 
@@ -600,8 +604,10 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             }
             break;
         }
+        case KS_OPEN_EXT:
+            launch("text/x-source-code", KERNEL_SETTINGS);
+            break;
         default:
-            // fprintf(stderr, "Message: %u. Not processed.\n", msg->what);
             BView::MessageReceived(msg);
             break;
     }

@@ -11,6 +11,7 @@
 
 #define KS_ITEM_SELECTED  'ksis'
 #define KS_ITEM_CHANGED   'ksic'
+#define KS_OPEN_EXT       'kext'
 
 class KernelSettingsView : public BView {
 public:
@@ -65,7 +66,8 @@ private:
                  *btsyslogmaxsz,
                  *btserialdbgspd;
     BButton      *refreshButton,
-                 *resetButton;
+                 *resetButton,
+                 *openextButton;
     std::vector<entry> kernelsettings;
     // std::unordered_map<BString, bool> togglemap;
 };
