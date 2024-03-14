@@ -129,6 +129,31 @@ status_t save_data_to_file(const char* in_filename, const char* in_data, int in_
 	return B_OK;
 }
 
+status_t watch_fs_entry(BEntry* entry, BMessenger target)
+{
+	node_ref ref;
+	entry->GetNodeRef(&ref);
+	uint32 flags = B_WATCH_NAME | B_WATCH_STAT | B_WATCH_ATTR;
+	if(entry->IsDirectory())
+		flags |= B_WATCH_DIRECTORY;
+	return watch_node(&ref, flags, target);
+}
+
+status_t unwatch_fs_entry(BEntry* entry, BMessenger target)
+{
+	node_ref ref;
+	entry->GetNodeRef(&ref);
+	return watch_node(&ref, B_STOP_WATCHING, target);
+}
+
+bool compare_fs_entry_node (const char* entrypath, dev_t dev, ino_t ino)
+{
+    struct stat st;
+    BEntry entry(entrypath);
+    entry.GetStat(&st);
+    return st.st_dev == dev && st.st_ino == ino;
+}
+
 // #pragma mark - Autolaunch
 
 status_t autolaunch_load(std::vector<autolaunch_entry>& entrylist)
@@ -267,11 +292,12 @@ status_t autolaunch_create_shell(BString name, BString shell)
 
 // #pragma mark - User scripts
 
-status_t userscript_create(BString what)
+status_t userscript_create(BString path)
 {
     BString buffer;
-    userscript_default(what, &buffer);
-    return userscript_save(what, buffer);
+    BPath _path(path);
+    userscript_default(_path.Leaf(), &buffer);
+    return userscript_save(path, buffer);
 }
 
 void userscript_default(BString what, BString* out_data)
@@ -317,44 +343,15 @@ void userscript_default(BString what, BString* out_data)
     }
 }
 
-status_t userscript_load(BString what, BString* out_data)
+status_t userscript_load(BString path, BString* out_data)
 {
-    BString filepath("/boot/home/config/settings/boot/");
-    filepath.Append(what);
-    return load_data_from_file(filepath.String(), out_data);
+    return load_data_from_file(path.String(), out_data);
 }
 
-status_t userscript_save(BString what, BString in_data)
+status_t userscript_save(BString path, BString in_data)
 {
-    BString filepath("/boot/home/config/settings/boot/");
-    filepath.Append(what);
     int length = strlen(in_data.String());
-    return save_data_to_file(filepath.String(), in_data.String(), length);
-}
-
-
-// #pragma mark - Terminal profile
-
-status_t termprofile_create()
-{
-    BString buffer;
-    termprofile_default(&buffer);
-    return save_data_to_file(USER_PROF_ENV, buffer.String(), strlen(buffer.String()));
-}
-
-void termprofile_default(BString *out_data)
-{
-    *out_data = "";
-}
-
-status_t termprofile_load(BString *out_data)
-{
-    return load_data_from_file(USER_PROF_ENV, out_data);
-}
-
-status_t termprofile_save(BString in_data)
-{
-    return save_data_to_file(USER_PROF_ENV, in_data.String(), strlen(in_data.String()));
+    return save_data_to_file(path.String(), in_data.String(), length);
 }
 
 // #pragma mark - Kernel settings

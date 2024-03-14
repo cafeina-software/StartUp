@@ -8,7 +8,7 @@
 
 #define kAppName "StartUp"
 #define kAppSignature "application/x-vnd.Haiku-StartUp"
-#define kAppVersionStr "0.2.2"
+#define kAppVersionStr "0.2.3"
 #define kAppHomePage "https://codeberg.org/cafeina/StartUp"
 
 #if defined(DEBUG) || defined(_DEBUG)

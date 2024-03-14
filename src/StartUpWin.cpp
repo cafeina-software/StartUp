@@ -55,11 +55,13 @@ StartUpWin::StartUpWin()
     optionsMenuField = new BMenuField("mf_opt", NULL, optionsMenu, false);
 
     alview = new AutolaunchView(tabs[0].name, ((StartUpApp*)be_app)->CurrentALList());
-    termenvview = new TextEditorView(tabs[1].name, ((StartUpApp*)be_app)->CurrentProfileEnv(),USER_PROF_ENV);
+    termenvview = new TextEditorView(tabs[1].name, ((StartUpApp*)be_app)->CurrentProfileEnv(), USER_PROF_ENV);
     usview = new UserScriptsView(tabs[2].name, ((StartUpApp*)be_app)->CurrentUBS(),
         ((StartUpApp*)be_app)->CurrentUSS(), ((StartUpApp*)be_app)->CurrentUSF(), ((StartUpApp*)be_app)->CurrentUserEnv());
     kernview = new KernelSettingsView(tabs[3].name, ((StartUpApp*)be_app)->CurrentKernelSettings());
 
+    StartMonitoring();
+    
     tabView = new BTabView("tabs", B_WIDTH_FROM_LABEL);
     tabView->SetBorder(B_NO_BORDER);
     tabView->AddTab(alview, new MyTab(tabs[0].id));
@@ -85,6 +87,11 @@ StartUpWin::StartUpWin()
             .Add(new BButton(NULL, B_TRANSLATE("Close"), new BMessage('clse')))
         .End()
     .End();
+}
+
+StartUpWin::~StartUpWin()
+{
+	StopMonitoring();
 }
 
 void StartUpWin::MessageReceived(BMessage* message)
@@ -157,12 +164,105 @@ void StartUpWin::MessageReceived(BMessage* message)
             kswarningshown = !kswarningshown;
             settingsMenu->ItemAt(0)->SetMarked(kswarningshown);
             break;
+        case B_NODE_MONITOR:
+        {
+        	int32 opcode = message->GetInt32("opcode", 0);
+        	
+        	switch(opcode)
+        	{
+        		case B_STAT_CHANGED:
+        		{
+        			dev_t device = message->GetInt32("device", 0);
+        			ino_t node = message->GetInt64("node", 0);
+        			
+        			if(compare_fs_entry_node(USER_AUTOLAUNCH_DIR, device, node))
+        				alview->_Update();
+        			else if(compare_fs_entry_node(USER_PROF_ENV, device, node))
+        				termenvview->_Update();
+        			else if(compare_fs_entry_node(USER_BOOT_SCRIPT, device, node))
+        				dynamic_cast<TextEditorView*>(usview->FindView("UserBootscript"))->_Update();
+                    else if(compare_fs_entry_node(USER_SHUTDOWN_SCRIPT, device, node))
+                        dynamic_cast<TextEditorView*>(usview->FindView("UserShutdownScript"))->_Update();
+                    else if(compare_fs_entry_node(USER_SHUTDOWN_FINISH_SCRIPT, device, node))
+                        dynamic_cast<TextEditorView*>(usview->FindView("UserShutdownFinishScript"))->_Update();
+                    else if(compare_fs_entry_node(USER_SETUP_ENVIRONMENT, device, node))
+                        dynamic_cast<TextEditorView*>(usview->FindView("UserSetupEnvironment"))->_Update();
+                    else if(compare_fs_entry_node(KERNEL_SETTINGS, device, node))
+                        kernview->_Update();
+        			break;
+        		}
+        		case B_ENTRY_REMOVED:
+        		{
+        			dev_t device = message->GetInt32("device", 0);
+        			ino_t directory = message->GetInt64("directory", 0);
+        			
+        			if(compare_fs_entry_node(USER_AUTOLAUNCH_DIR, device, directory))
+        				alview->_Update();
+        			break;
+        		}
+        	}
+        	break;
+        }
 	    default:
 		{
 			BWindow::MessageReceived(message);
 			break;
 		}
 	}
+}
+
+void StartUpWin::StartMonitoring()
+{
+    BEntry entry;
+
+    entry.SetTo(USER_AUTOLAUNCH_DIR);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_PROF_ENV);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_BOOT_SCRIPT);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SHUTDOWN_SCRIPT);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SHUTDOWN_FINISH_SCRIPT);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SETUP_ENVIRONMENT);
+    watch_fs_entry(&entry, this);
+
+    entry.SetTo(KERNEL_SETTINGS);
+    watch_fs_entry(&entry, this);
+}
+
+void StartUpWin::StopMonitoring()
+{
+    BEntry entry;
+
+    entry.SetTo(USER_AUTOLAUNCH_DIR);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_PROF_ENV);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_BOOT_SCRIPT);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SHUTDOWN_SCRIPT);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SHUTDOWN_FINISH_SCRIPT);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(USER_SETUP_ENVIRONMENT);
+    unwatch_fs_entry(&entry, this);
+
+    entry.SetTo(KERNEL_SETTINGS);
+    unwatch_fs_entry(&entry, this);
+
+    stop_watching(this);
 }
 
 status_t StartUpWin::LoadSettings(BMessage* indata)

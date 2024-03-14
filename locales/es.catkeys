@@ -1,4 +1,4 @@
-1	Spanish	application/x-vnd.Haiku-StartUp	151011586
+1	Spanish	application/x-vnd.Haiku-StartUp	1556963665
 Command	Autolaunch view		Comando
 Terminal environment	Main window		Perfil del entorno
 Enable single step hack for QEMU	Kernel settings		Habilitar hack de un solo paso para QEMU
@@ -27,6 +27,7 @@ Syslog: debug output	Kernel settings		Syslog: salida de depuración
 0.1\tInitial version.	About box		0.1\tVersión inicial.
 APM support for legacy hardware	Kernel settings		Soporte de APM para hardware de legado
 Entry missing	text editor view	This will not be visible	Entrada no disponible
+Open file	Kernel settings		Abrir archivo
 Copy file…	Autolaunch view		Copiar archivo…
 Disable multiprocessor support	Kernel settings		Deshabilitar soporte multiprocesador
 Enable Kernel Debugging Land	Kernel settings		Habilitar el Kernel Debugging Land

@@ -6,9 +6,9 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "text editor view"
 
-TextEditorView::TextEditorView(const char* title, BString data, const char* what)
+TextEditorView::TextEditorView(const char* title, BString data, const char* path)
 : BView(BRect(), title, B_FOLLOW_ALL, B_ASYNCHRONOUS_CONTROLS),
-  indata(data), targetfile(what), readonly(false)
+  indata(data), targetfile(path), readonly(false)
 {
     ckreadonly = new BCheckBox("cb_editable", B_TRANSLATE("Read only"), new BMessage(TEV_RDONLY));
     ckreadonly->SetValue(B_CONTROL_OFF);
@@ -115,7 +115,8 @@ void TextEditorView::MessageReceived(BMessage* msg)
             if(result == 0)
                 break;
 
-            userscript_default(targetfile, &indata);
+            BPath fullpath(targetfile);
+            userscript_default(fullpath.Leaf(), &indata);
             textview->Delete();
             textview->SetText(indata.String());
             userscript_save(targetfile, BString(textview->Text()));
@@ -134,7 +135,7 @@ void TextEditorView::MessageReceived(BMessage* msg)
                     break;
                 status_t status = userscript_create(targetfile);
                 if(status != B_OK)
-                    fprintf(stderr, "Error: file USE could not be created.\n");
+                    fprintf(stderr, "Error: file could not be created.\n");
             }
             launch("text/x-source-code", targetfile);
             break;

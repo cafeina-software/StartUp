@@ -9,22 +9,22 @@
 StartUpApp::StartUpApp()
 : BApplication(kAppSignature)
 {
-    if(userscript_load("UserBootscript", &ubsdata) != B_OK)
+    if(userscript_load(USER_BOOT_SCRIPT, &ubsdata) != B_OK)
         fprintf(stderr, "UBS not loaded\n");
 
-    if(userscript_load("UserShutdownScript", &ussdata) != B_OK)
+    if(userscript_load(USER_SHUTDOWN_SCRIPT, &ussdata) != B_OK)
         fprintf(stderr, "USS not loaded\n");
 
-    if(userscript_load("UserShutdownFinishScript", &usfdata) != B_OK)
+    if(userscript_load(USER_SHUTDOWN_FINISH_SCRIPT, &usfdata) != B_OK)
         fprintf(stderr, "USFS not loaded\n");
 
     if(autolaunch_load(autolaunch_list) != B_OK)
         fprintf(stderr, "Autolaunch not loaded\n");
 
-    if(userscript_load("UserSetupEnvironment", &usedata) != B_OK)
+    if(userscript_load(USER_SETUP_ENVIRONMENT, &usedata) != B_OK)
         fprintf(stderr, "USE not loaded\n");
 
-    if(termprofile_load(&profdata) != B_OK)
+    if(userscript_load(USER_PROF_ENV, &profdata) != B_OK)
         fprintf(stderr, "\"profile\" file not loaded\n");
 
     if(kernelsettings_load(&kernelsettings_list) != B_OK) {

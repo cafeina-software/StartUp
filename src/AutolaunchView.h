@@ -25,17 +25,13 @@ class NewScriptWindow;
 class AutolaunchView : public BView
 {
 public:
-        AutolaunchView      (const char* title, std::vector<autolaunch_entry> autolaunch_list);
-    virtual
-        ~AutolaunchView     ();
-    virtual void
-        MessageReceived     (BMessage* msg);
-    virtual void
-        AttachedToWindow    ();
-    void
-        _Init               ();
-    void
-        _Update             ();
+                    AutolaunchView      (const char* title, std::vector<autolaunch_entry> autolaunch_list);
+    virtual        ~AutolaunchView      ();
+    virtual void    MessageReceived     (BMessage* msg);
+    virtual void    AttachedToWindow    ();
+    void            _Update             ();
+private:
+    void            _Init               ();
 private:
     BColumnListView        *alListView;
     BButton                *addButton,
@@ -55,9 +51,8 @@ private:
 class EditEntryWindow : public BWindow
 {
 public:
-        EditEntryWindow     ();
-    virtual void
-        MessageReceived     (BMessage* msg);
+                 EditEntryWindow     ();
+    virtual void MessageReceived     (BMessage* msg);
 private:
     BTextControl *entryName,
                  *entryType,
@@ -69,11 +64,9 @@ private:
 class NewScriptWindow : public BWindow
 {
 public:
-        NewScriptWindow     (BView* parent = nullptr);
-    virtual void
-        AttachedToWindow    ();
-    virtual void
-        MessageReceived     (BMessage* msg);
+                 NewScriptWindow     (BView* parent = nullptr);
+    virtual void AttachedToWindow    ();
+    virtual void MessageReceived     (BMessage* msg);
 private:
 	BString       name;
 	BString       shell;

@@ -20,9 +20,9 @@ public:
     virtual void        MessageReceived   (BMessage* msg);
     status_t            GetValueForKey    (BString key, BString*, bool*);
     status_t            SaveKey           (BString key, BString value, bool enabled);
+    void                _Update           ();
 private:
     void                _Init             ();
-    void                _Update           ();
 private:
     BListView    *fListView;
     BCardView    *fCardView;

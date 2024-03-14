@@ -6,13 +6,15 @@
 #include "KernelSettingsView.h"
 #include "TextEditorView.h"
 #include "UserScriptsView.h"
-// #include "EnvironmentView.h"
 
 class StartUpWin : public BWindow
 {
 public:
                          StartUpWin          ();
+    virtual             ~StartUpWin          ();
     virtual void         MessageReceived     (BMessage* msg);
+    void                 StartMonitoring     ();
+    void                 StopMonitoring      ();
     status_t             LoadSettings        (BMessage* indata);
     status_t             SaveSettings        (BMessage* outdata);
 private:
@@ -27,7 +29,6 @@ private:
     UserScriptsView        *usview;
     TextEditorView         *ubsview,
                            *termenvview;
-    // EnvironmentView        *envview;
     KernelSettingsView     *kernview;
 
     bool                    kswarningshown;

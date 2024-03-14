@@ -23,10 +23,10 @@ UserScriptsView::UserScriptsView(const char* title, BString _ubs, BString _uss, 
     fListView->SetExplicitMinSize(BSize(fListView->StringWidth("UserShutdownFinishScript"),
         B_SIZE_UNSET));
 
-    TextEditorView *ubsview = new TextEditorView("UserBootscript", ubs, "UserBootscript");
-    TextEditorView *ussview = new TextEditorView("UserShutdownScript", uss, "UserShutdownScript");
-    TextEditorView *usfview = new TextEditorView("UserShutdownFinishScript", usf, "UserShutdownFinishScript");
-    TextEditorView *useview = new TextEditorView("UserSetupEnvironment", use, "UserSetupEnvironment");
+    TextEditorView *ubsview = new TextEditorView("UserBootscript", ubs, USER_BOOT_SCRIPT);
+    TextEditorView *ussview = new TextEditorView("UserShutdownScript", uss, USER_SHUTDOWN_SCRIPT);
+    TextEditorView *usfview = new TextEditorView("UserShutdownFinishScript", usf, USER_SHUTDOWN_FINISH_SCRIPT);
+    TextEditorView *useview = new TextEditorView("UserSetupEnvironment", use, USER_SETUP_ENVIRONMENT);
 
     fCardView = new BCardView();
     fCardView->AddChild(ubsview);

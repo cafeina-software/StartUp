@@ -1,3 +1,18 @@
+# StartUp 0.2
+
+* New features: 
+
+- This release added a preliminar option to edit the kernel load configuration file.
+- Unified the User* scripts under a single view and added USS and USFS scripts (these 
+  two are not currently functional) editors.
+- Added initial support for live monitoring for autoupdates, in order to have to 
+  manually update each time there is an external change.
+
+* Bugfixes:
+
+- A fix for the editor views was tried. Now when it is tried to be opened with 
+  an external editor, it will open it if it exists and ask for its creation when it does not.
+
 # StartUp 0.1
 
 This is an unstable initial version intended only for testing and previewing.
