@@ -1,16 +1,34 @@
+# StartUp 0.3
+
+* New features:
+
+- Added a panel to edit the system and main user blacklists, mainly used to block
+  faulty drivers from packages.
+- Now there is a quick option to restore all the configurations (that can be
+  edited with this application) to their default values. (If the default value
+  is to not have a file, it will be deleted).
+
+* Improvements:
+
+- Left-below menu field was converted to a fully featured menu bar. Now its
+  options are now easier to select.
+- Added an option to navigate application help files. It will look up in
+  $(app_dir)/Documentation/index.html
+
+
 # StartUp 0.2
 
-* New features: 
+* New features:
 
 - This release added a preliminar option to edit the kernel load configuration file.
-- Unified the User* scripts under a single view and added USS and USFS scripts (these 
+- Unified the User* scripts under a single view and added USS and USFS scripts (these
   two are not currently functional) editors.
-- Added initial support for live monitoring for autoupdates, in order to have to 
+- Added initial support for live monitoring for autoupdates, in order to have to
   manually update each time there is an external change.
 
 * Bugfixes:
 
-- A fix for the editor views was tried. Now when it is tried to be opened with 
+- A fix for the editor views was tried. Now when it is tried to be opened with
   an external editor, it will open it if it exists and ask for its creation when it does not.
 
 # StartUp 0.1

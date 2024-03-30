@@ -252,12 +252,12 @@ KernelSettingsView::KernelSettingsView(const char* title, std::vector<entry> ent
         BSize(fListView->StringWidth(B_TRANSLATE("Hardware configuration")) + 10,
         B_SIZE_UNSET));
 
-    openextButton = new BButton(B_TRANSLATE("Open file"), new BMessage(KS_OPEN_EXT));
-    openextButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
     refreshButton = new BButton(B_TRANSLATE("Update"), new BMessage('updt'));
     refreshButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
     resetButton = new BButton(B_TRANSLATE("Restore"), new BMessage('rstr'));
     resetButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
+    openextButton = new BButton(B_TRANSLATE("Open file"), new BMessage(KS_OPEN_EXT));
+    openextButton->SetExplicitSize(BSize(listScrollView->MinSize().Width(), B_SIZE_UNSET));
 
     fCardView = new BCardView();
     fCardView->AddChild(hardConfigView);
@@ -365,7 +365,7 @@ void KernelSettingsView::_Init()
     ((MyButton*)btqemusingle)->SetValue(isenabled);
 }
 
-void KernelSettingsView::_Update()
+void KernelSettingsView::Update()
 {
     kernelsettings.clear();
     kernelsettings_load(&kernelsettings);
@@ -376,9 +376,9 @@ void KernelSettingsView::AttachedToWindow()
 {
     fListView->SetTarget(this);
     // fCardView->SetTarget(this);
-    openextButton->SetTarget(this);
     refreshButton->SetTarget(this);
     resetButton->SetTarget(this);
+    openextButton->SetTarget(this);
 
     cbSMP->SetTarget(this);
     cbIOAPIC->SetTarget(this);
@@ -420,7 +420,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("disable_smp",
                 cbSMP->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btSMP)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_ioa':
@@ -429,7 +429,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("disable_ioapic",
                 cbIOAPIC->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btIOAPIC)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_apm':
@@ -438,7 +438,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("apm",
                 cbAPM->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btAPM)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_acp':
@@ -447,7 +447,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("acpi",
                 cbACPI->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btACPI)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_4gb':
@@ -456,7 +456,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("4gb_memory_limit",
                 cb4GBLimit->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)bt4GBLimit)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_fsv':
@@ -465,7 +465,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("fail_safe_video_mode",
                 cbfailsafevideo->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btfailsafevideo)->Value());
-            _Update();
+            Update();
             break;
         }
         case '9.6k':
@@ -480,14 +480,14 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
                 i++;
             SaveKey("serial_debug_speed", std::to_string(spData[i].value).c_str(),
                 ((MyButton*)btserialdbgspd)->Value());
-            _Update();
+            Update();
             break;
         }
         case 'port':
         {
             SaveKey("serial_debug_port", iserialdbgport->Text(),
                 ((MyButton*)btserialdbgport)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_kdl':
@@ -496,7 +496,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("bluescreen",
                 cbbsod->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btbsod)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_sym':
@@ -505,7 +505,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("load_symbols",
                 cbloadsymbols->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btloadsymbols)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_emr':
@@ -514,7 +514,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("emergency_keys",
                 cbemergkeys->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btemergkeys)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_sdb':
@@ -523,7 +523,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("serial_debug_output",
                 cbserialdbgout->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btserialdbgout)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_bch':
@@ -532,7 +532,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("bochs_debug_output",
                 sbbochsdbgout->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btbochsdbgout)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_lak':
@@ -541,7 +541,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("laplinkll_debug_output",
                 cblakplink->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btlakplink)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_log':
@@ -550,7 +550,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             status_t status = SaveKey("serial_debug_output",
                 cbsyslogout->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btsyslogout)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_lgt':
@@ -559,21 +559,21 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("syslog_time_stamps",
                 cbSMP->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)cbsyslogtime)->Value());
-            _Update();
+            Update();
             break;
         }
         case '_lgb':
         case 'slbz':
         {
 
-            _Update();
+            Update();
             break;
         }
         case '_lgx':
         case 'symx':
         {
 
-            _Update();
+            Update();
             break;
         }
         case '_qmu':
@@ -582,11 +582,11 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             SaveKey("qemu_single_step_hack",
                 cbqemusingle->Value() == B_CONTROL_ON ? "true" : "false",
                 ((MyButton*)btqemusingle)->Value());
-            _Update();
+            Update();
             break;
         }
         case 'updt':
-            _Update();
+            Update();
             break;
         case 'rstr':
         {
@@ -596,10 +596,7 @@ void KernelSettingsView::MessageReceived(BMessage* msg)
             alert->SetShortcut(0, B_ESCAPE);
             int32 result = alert->Go();
             if(result == 1) {
-                kernelsettings.clear();
-                kernelsettings_default(&kernelsettings);
-                kernelsettings_save(kernelsettings);
-                kernelsettings_load(&kernelsettings);
+                RestoreDefault();
                 _Init();
             }
             break;
@@ -652,3 +649,12 @@ status_t KernelSettingsView::SaveKey(BString key, BString value, bool enabled)
 
     return status;
 }
+
+void KernelSettingsView::RestoreDefault()
+{
+    kernelsettings.clear();
+    kernelsettings_default(&kernelsettings);
+    kernelsettings_save(kernelsettings);
+    kernelsettings_load(&kernelsettings);
+}
+

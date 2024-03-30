@@ -17,19 +17,20 @@ public:
     virtual       ~TextEditorView      ();
     virtual void   MessageReceived     (BMessage*);
     virtual void   AttachedToWindow    ();
-    void           _Update             ();
+    void           Update              ();
+    void           RestoreDefault      ();
 private:
     void           _Init               ();
 private:
-    BString     indata;
-    const char *targetfile;
-    bool        readonly;
-    BButton    *saveButton,
-               *updateButton,
-               *resetButton,
-               *openextButton;
-    BCheckBox  *ckreadonly;
-    BTextView  *textview;
+    BString        indata;
+    const char    *targetfile;
+    bool           readonly;
+    BButton       *saveButton,
+                  *updateButton,
+                  *resetButton,
+                  *openextButton;
+    BCheckBox     *ckreadonly;
+    BTextView     *textview;
 };
 
 #endif /* __TEXT_EDITOR_VIEW_H */

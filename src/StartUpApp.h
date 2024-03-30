@@ -6,17 +6,6 @@
 #include "DataLoader.h"
 #include "StartUpWin.h"
 
-#define kAppName "StartUp"
-#define kAppSignature "application/x-vnd.Haiku-StartUp"
-#define kAppVersionStr "0.2.3"
-#define kAppHomePage "https://codeberg.org/cafeina/StartUp"
-
-#if defined(DEBUG) || defined(_DEBUG)
-#define __trace(x, ...) fprintf(stderr, kAppName " @ %s: " x, __func__, ##__VA_ARGS__)
-#else
-#define __trace(x, ...)
-#endif
-
 class StartUpApp : public BApplication
 {
 public:

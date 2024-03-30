@@ -29,7 +29,8 @@ public:
     virtual        ~AutolaunchView      ();
     virtual void    MessageReceived     (BMessage* msg);
     virtual void    AttachedToWindow    ();
-    void            _Update             ();
+    void            Update              ();
+    void            RestoreDefault      ();
 private:
     void            _Init               ();
 private:
@@ -51,33 +52,33 @@ private:
 class EditEntryWindow : public BWindow
 {
 public:
-                 EditEntryWindow     ();
-    virtual void MessageReceived     (BMessage* msg);
+                    EditEntryWindow     ();
+    virtual void    MessageReceived     (BMessage* msg);
 private:
-    BTextControl *entryName,
-                 *entryType,
-                 *entryInfo;
-    BButton      *saveButton,
-                 *cancelButton;
+    BTextControl   *entryName,
+                   *entryType,
+                   *entryInfo;
+    BButton        *saveButton,
+                   *cancelButton;
 };
 
 class NewScriptWindow : public BWindow
 {
 public:
-                 NewScriptWindow     (BView* parent = nullptr);
-    virtual void AttachedToWindow    ();
-    virtual void MessageReceived     (BMessage* msg);
+                    NewScriptWindow     (BView* parent = nullptr);
+    virtual void    AttachedToWindow    ();
+    virtual void    MessageReceived     (BMessage* msg);
 private:
-	BString       name;
-	BString       shell;
+	BString         name;
+	BString         shell;
 
-	BView        *_parent;
+	BView          *_parent;
 
-    BTextControl *entryName;
-    BMenuField   *shellMenu;
-    BPopUpMenu   *shellPopUp;
-    BButton      *saveButton,
-                 *cancelButton;
+    BTextControl   *entryName;
+    BMenuField     *shellMenu;
+    BPopUpMenu     *shellPopUp;
+    BButton        *saveButton,
+                   *cancelButton;
 };
 
 #endif /* __AL_VIEW_H */

@@ -51,10 +51,23 @@ void TextEditorView::_Init()
     textview->SetText(indata.String());
 }
 
-void TextEditorView::_Update()
+void TextEditorView::Update()
 {
-    userscript_load(targetfile, &indata);
+    // fprintf(stderr, "CALLED\n");
+    if(userscript_load(targetfile, &indata) != B_OK)
+        indata.SetTo("");
     _Init();
+}
+
+void TextEditorView::RestoreDefault()
+{
+    userscript_default(BPath(targetfile).Leaf(), &indata);
+    if(indata.IsEmpty())
+        userscript_delete(BString(targetfile));
+    else
+        userscript_save(BString(targetfile), indata);
+
+    Update();
 }
 
 void TextEditorView::AttachedToWindow()
@@ -100,10 +113,10 @@ void TextEditorView::MessageReceived(BMessage* msg)
         case TEV_SAVE:
             if(userscript_save(targetfile, BString(textview->Text())) != B_OK)
                 fprintf(stderr, "Error: file %s could not be saved.\n", targetfile);
-            _Update();
+            Update();
             break;
         case TEV_UPDATE:
-            _Update();
+            Update();
             break;
         case TEV_RESTORE:
         {
@@ -115,12 +128,9 @@ void TextEditorView::MessageReceived(BMessage* msg)
             if(result == 0)
                 break;
 
-            BPath fullpath(targetfile);
-            userscript_default(fullpath.Leaf(), &indata);
             textview->Delete();
+            RestoreDefault();
             textview->SetText(indata.String());
-            userscript_save(targetfile, BString(textview->Text()));
-            _Update();
             break;
         }
         case TEV_OPENEXT:

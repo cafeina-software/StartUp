@@ -9,22 +9,133 @@
 
 #include "DataLoader.h"
 
-node_flavor entry_type(BEntry entry);
-bool is_space(char c);
-bool is_string_digit(const char* in);
-status_t load_data_from_file(const char* in_filename, BString *out_data);
-status_t save_data_to_file(const char* in_filename, const char* in_data, int in_length);
+node_flavor entry_type          (BEntry entry);
+bool        is_space            (char c);
+bool        is_string_digit     (const char* in);
+status_t    load_data_from_file (const char* in_filename, BString *out_data);
+status_t    save_data_to_file   (const char* in_filename, const char* in_data, int in_length);
+status_t    delete_data_file    (const char* in_filename);
+
+// #pragma mark - class Package
+
+Package::Package(BString n)
+: name(n)
+{
+}
+
+Package::~Package()
+{
+	ClearBlacklist();
+}
+
+BString Package::Name()
+{
+	return name;
+}
+
+std::list<BString>* Package::Blacklist()
+{
+	return &blacklist;
+}
+
+void Package::AddBlacklistItem(BString item)
+{
+	blacklist.push_back(item);
+}
+
+void Package::RemoveBlacklistItem(BString item)
+{
+	blacklist.remove(item);
+}
+
+bool Package::IsBlacklistEmpty()
+{
+    return blacklist.empty();
+}
+
+void Package::ClearBlacklist()
+{
+    if(!blacklist.empty())
+		blacklist.clear();
+}
+
+// #pragma mark - class PackageList
+
+PackageList::PackageList()
+{
+}
+
+PackageList::~PackageList()
+{
+    Clear();
+}
+
+void PackageList::AddPackage(Package pkg)
+{
+	packages.push_back(pkg);
+}
+
+void PackageList::AddPackage(BString pkgname)
+{
+    Package pkg(pkgname);
+    AddPackage(pkg);
+}
+
+void PackageList::RemovePackage(BString pkgname)
+{
+	auto it  = packages.begin();
+	while(it != packages.end() && it->Name() != pkgname)
+		++it;
+	if(it != packages.end())
+		packages.erase(it);
+}
+
+Package* PackageList::PackageByName(BString pkgname)
+{
+	auto it = packages.begin();
+    while(it != packages.end() && it->Name() != pkgname) {
+        ++it;
+    }
+    if(it != packages.end())
+        return &(*it);
+    else
+        return nullptr;
+}
+
+std::list<Package>& PackageList::Packages()
+{
+    return packages;
+}
+
+bool PackageList::HasPackage(BString pkgname)
+{
+    return !(PackageByName(pkgname) == nullptr);
+}
+
+bool PackageList::IsEmpty()
+{
+    return packages.empty();
+}
+
+void PackageList::Clear()
+{
+    for(auto pkg : packages)
+        pkg.ClearBlacklist();
+
+    if(!packages.empty())
+        packages.clear();
+}
 
 // #pragma mark - General functions
 
-void launch(const char* mimetype, const char* path)
+status_t launch(const char* mimetype, const char* path)
 {
 	if(path) {
 		char* args[] = { const_cast<char*>("app"), const_cast<char*>(path) };
-   		be_roster->Launch(mimetype, 1, args+1);
+   		return be_roster->Launch(mimetype, 1, args+1);
 	}
 	else
-		be_roster->Launch(mimetype);
+		return be_roster->Launch(mimetype);
 }
 
 bool exists(const char* filename)
@@ -96,7 +207,9 @@ status_t load_data_from_file(const char* in_filename, BString *out_data)
 {
 	status_t status = B_OK;
 
-    BFile file(in_filename, B_READ_WRITE);
+    // out_data->SetTo("");
+
+    BFile file(in_filename, B_READ_ONLY);
     if((status = file.InitCheck()) != B_OK)
     	return status;
 
@@ -129,11 +242,17 @@ status_t save_data_to_file(const char* in_filename, const char* in_data, int in_
 	return B_OK;
 }
 
+status_t delete_data_file(const char* in_filename)
+{
+    BEntry entry(in_filename);
+    return entry.Remove();
+}
+
 status_t watch_fs_entry(BEntry* entry, BMessenger target)
 {
 	node_ref ref;
 	entry->GetNodeRef(&ref);
-	uint32 flags = B_WATCH_NAME | B_WATCH_STAT | B_WATCH_ATTR;
+	uint32 flags = B_WATCH_NAME | B_WATCH_STAT/* | B_WATCH_ATTR*/;
 	if(entry->IsDirectory())
 		flags |= B_WATCH_DIRECTORY;
 	return watch_node(&ref, flags, target);
@@ -290,6 +409,18 @@ status_t autolaunch_create_shell(BString name, BString shell)
     return status;
 }
 
+void autolaunch_clear_folder()
+{
+    BDirectory autolaunchdir(USER_AUTOLAUNCH_DIR);
+    BEntry entry;
+    BPath path;
+
+    while(autolaunchdir.GetNextEntry(&entry) == B_OK)
+        entry.Remove();
+
+    autolaunchdir.Rewind();
+}
+
 // #pragma mark - User scripts
 
 status_t userscript_create(BString path)
@@ -330,6 +461,7 @@ void userscript_default(BString what, BString* out_data)
                  .Append("# the above boot launch directory.\n")
                  .Append("\n");
     }
+#if 0
     else if(what == "UserSetupEnvironment") {
         out_data->Append("# Quick start for file UserSetupEnvironment.  Copy or rename this file as\n")
                  .Append("#	\"/boot/home/config/settings/boot/UserSetupEnvironment\".\n")
@@ -341,6 +473,7 @@ void userscript_default(BString what, BString* out_data)
                  .Append("# export IS_COMPUTER_ON=1\n")
                  .Append("\n");
     }
+#endif
 }
 
 status_t userscript_load(BString path, BString* out_data)
@@ -352,6 +485,11 @@ status_t userscript_save(BString path, BString in_data)
 {
     int length = strlen(in_data.String());
     return save_data_to_file(path.String(), in_data.String(), length);
+}
+
+void userscript_delete(BString path)
+{
+    delete_data_file(path.String());
 }
 
 // #pragma mark - Kernel settings
@@ -453,4 +591,68 @@ status_t kernelsettings_save(std::vector<entry> entrylist)
     }
     int length = strlen(buffer.String());
     return save_data_to_file(KERNEL_SETTINGS, buffer.String(), length);
+}
+
+// #pragma mark Blacklist stuff
+
+status_t blacklist_create(BString path)
+{
+    return save_data_to_file(path.String(), NULL, 0);
+}
+
+status_t blacklist_load(BString path, PackageList* pkglist)
+{
+    status_t status = B_OK;
+
+    BString in;
+    if((status = load_data_from_file(path.String(), &in)) != B_OK)
+        return status;
+    std::string input(in);
+
+    // PackageList* pkglist = new PackageList();
+    Package* currentpkg = nullptr;
+    int level = 0;
+
+    std::istringstream iss(input);
+    std::string token;
+    std::regex pkgname_rgx("\\s*Package\\s+(\\w+)\\s*");
+    std::regex blk_rgx("\\s*BlockedEntries\\s*");
+    std::regex entry_rgx("^\\s*([\\w\\/\\-]+)\\s*$");
+
+    while(std::getline(iss, token)) {
+        std::smatch match;
+        if(std::regex_search(token, match, pkgname_rgx)) {
+            pkglist->AddPackage(match[1].str().c_str());
+            currentpkg = pkglist->PackageByName(match[1].str().c_str());
+        }
+        else if(std::regex_search(token, match, entry_rgx)) {
+            currentpkg->AddBlacklistItem(match[1].str().c_str());
+        }
+    }
+
+    return status;
+}
+
+status_t blacklist_save(BString path, PackageList pkglist)
+{
+    status_t status = B_OK;
+    BString out_data;
+
+    for(auto it = pkglist.Packages().begin(); it != pkglist.Packages().end(); ++it) {
+        out_data << "Package " << it->Name() << " {\n";
+        out_data << "    BlockedEntries {\n";
+        for(auto jt = it->Blacklist()->begin(); jt != it->Blacklist()->end(); ++jt) {
+            out_data << "        " << jt->String() << "\n";
+        }
+        out_data << "    }\n";
+        out_data << "}\n";
+    }
+    save_data_to_file(path.String(), out_data.String(), strlen(out_data.String()));
+    return status;
+}
+
+status_t blacklist_delete(BString path, PackageList* pkglist)
+{
+    pkglist->Clear();
+    return delete_data_file(path.String());
 }

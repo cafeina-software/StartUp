@@ -4,6 +4,7 @@
 #include <private/interface/AboutWindow.h>
 
 #include "StartUpApp.h"
+#include "StartUpDefs.h"
 #include "DataLoader.h"
 
 StartUpApp::StartUpApp()
@@ -86,6 +87,7 @@ void StartUpApp::AboutRequested()
 		NULL
 	};
 	const char* history[] = {
+        B_TRANSLATE("0.3\tSystem and user blacklists editor added."),
         B_TRANSLATE("0.2\tKernel settings options added."),
 		B_TRANSLATE("0.1\tInitial version."),
 		NULL

@@ -35,8 +35,10 @@ UserScriptsView::UserScriptsView(const char* title, BString _ubs, BString _uss, 
     fCardView->AddChild(useview);
 
     BLayoutBuilder::Group<>(this, B_HORIZONTAL)
-        .Add(listScrollView, 1)
-        .Add(fCardView, 3)
+        .AddSplit(B_HORIZONTAL, 4.0f)
+            .Add(listScrollView, 1)
+            .Add(fCardView, 3)
+        .End()
     .End();
 }
 

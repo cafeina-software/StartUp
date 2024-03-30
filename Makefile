@@ -33,14 +33,15 @@ APP_MIME_SIG = application/x-vnd.Haiku-StartUp
 #	same name (source.c or source.cpp) are included from different directories.
 #	Also note that spaces in folder names do not work well with this Makefile.
 SRCS = src/main.cpp               \
-       src/DataLoader.cpp         \
        src/StartUpApp.cpp         \
        src/StartUpWin.cpp         \
        src/AutolaunchView.cpp     \
-       src/TextEditorView.cpp     \
-       src/UserScriptsView.cpp    \
+       src/BlacklistView.cpp      \
+       src/CustomUI.cpp           \
+       src/DataLoader.cpp         \
        src/KernelSettingsView.cpp \
-       src/CustomUI.cpp
+       src/TextEditorView.cpp     \
+       src/UserScriptsView.cpp    
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
@@ -90,7 +91,7 @@ LOCAL_INCLUDE_PATHS =
 OPTIMIZE :=
 
 # 	Specify the codes for languages you are going to support in this
-# 	application. The default "en" one must be provided too. "make catkeys"
+# 	application. The default "en" one  must be provided too. "make catkeys"
 # 	will recreate only the "locales/en.catkeys" file. Use it as a template
 # 	for creating catkeys for other languages. All localization files must be
 # 	placed in the "locales" subdirectory.

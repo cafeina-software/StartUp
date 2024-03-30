@@ -156,7 +156,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
                 entry.GetPath(&path);
                 BString origin(path.Path());
                 if(autolaunch_create_link(origin) == B_OK)
-                    _Update();
+                    Update();
             }
             break;
         }
@@ -177,7 +177,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
                 entry.GetPath(&path);
                 BString origin(path.Path());
                 if(autolaunch_copy_file(origin) == B_OK)
-                    _Update();
+                    Update();
                 else
                     fprintf(stderr, "Something went wrong with the copying procedure.\n");
             }
@@ -202,7 +202,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
                     BEntry entry(((BStringField*)alListView->CurrentSelection()->GetField(0))->String());
                     entry.Remove();
                     alListView->RemoveRow(alListView->CurrentSelection());
-                    _Update();
+                    Update();
                 }
             }
             break;
@@ -231,7 +231,7 @@ void AutolaunchView::MessageReceived(BMessage* msg)
         }
         case ALV_ITEM_UPDATE:
         {
-            _Update();
+            Update();
             break;
         }
         case ALV_OPEN_ENTRY:
@@ -245,12 +245,18 @@ void AutolaunchView::MessageReceived(BMessage* msg)
     }
 }
 
-void AutolaunchView::_Update()
+void AutolaunchView::Update()
 {
     _list.clear();
     autolaunch_load(_list);
     alListView->Clear();
     _Init();
+}
+
+void AutolaunchView::RestoreDefault()
+{
+    autolaunch_clear_folder();
+    Update();
 }
 
 #undef B_TRANSLATION_CONTEXT

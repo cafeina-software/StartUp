@@ -1,33 +1,48 @@
-1	English	application/x-vnd.Haiku-StartUp	1556963665
+1	English	application/x-vnd.Haiku-StartUp	1479602405
 Command	Autolaunch view		Command
 Terminal environment	Main window		Terminal environment
 Enable single step hack for QEMU	Kernel settings		Enable single step hack for QEMU
 Kernel settings	Main window		Kernel settings
 OK	Autolaunch view: add new script		OK
+Clear	bl view	For user list	Clear
 Hardware configuration	Kernel settings		Hardware configuration
-Add file link…	Autolaunch view		Add file link…
+System	bl view		System
 Serial debug port	Kernel settings		Serial debug port
-Unknown	Autolaunch view		Unknown
+Add file link…	Autolaunch view		Add file link…
 Parallel debug output	Kernel settings		Parallel debug output
+Unknown	Autolaunch view		Unknown
+Do not restore	bl view		Do not restore
 File	Autolaunch view		File
 Logging	Kernel settings		Logging
 Autolaunch	Main window		Autolaunch
+Remove	bl view		Remove
 Create	Autolaunch view: add new script		Create
+Tools	Main window		Tools
 Cancel	Autolaunch view: edit entry		Cancel
+Target not valid. A item or a package must be selected first.	bl view		Target not valid. A item or a package must be selected first.
 Data	Autolaunch view		Data
+Remove	bl view	For system list	Remove
 Edit	Autolaunch view		Edit
+Do not remove	bl view		Do not remove
 Do not restore	Kernel settings		Do not restore
 Use fail safe video mode (VESA/framebuffer)	Kernel settings		Use fail safe video mode (VESA/framebuffer)
 Emergency keys (Alt+SysRq+*)	Kernel settings	Do not forget to translate the key names.	Emergency keys (Alt+SysRq+*)
 Restore	text editor view		Restore
+Open file	bl view	For user list	Open file
 Debugging	Kernel settings		Debugging
+Open file	bl view	For system list	Open file
+Clear	bl view	For system list	Clear
 The BeOS and Haiku community members.	About box		The BeOS and Haiku community members.
 Create	text editor view		Create
 Syslog: debug output	Kernel settings		Syslog: debug output
 0.1\tInitial version.	About box		0.1\tInitial version.
 APM support for legacy hardware	Kernel settings		APM support for legacy hardware
 Entry missing	text editor view	This will not be visible	Entry missing
+Documentation	Main window		Documentation
+Do you want to restore all the lists of blocked entries to the default settings?\nThis will delete the following lists:\n\n%lists%\n\n	bl view		Do you want to restore all the lists of blocked entries to the default settings?\nThis will delete the following lists:\n\n%lists%\n\n
+User	bl view		User
 Open file	Kernel settings		Open file
+This entry cannot be added because it is not part of a HPKG package.	bl view		This entry cannot be added because it is not part of a HPKG package.
 Copy file…	Autolaunch view		Copy file…
 Disable multiprocessor support	Kernel settings		Disable multiprocessor support
 Enable Kernel Debugging Land	Kernel settings		Enable Kernel Debugging Land
@@ -37,7 +52,12 @@ StartUp	System name		StartUp
 Open folder	Autolaunch view		Open folder
 Bash and scripting	Main window		Bash and scripting
 Check README for more information.	About box		Check README for more information.
+Expand / collapse	bl view		Expand / collapse
+item	bl view		item
+Update	bl view		Update
+0.3\tSystem and user blacklists editor added.	About box		0.3\tSystem and user blacklists editor added.
 Restore?	text editor view	This will not be visible	Restore?
+View package	bl view		View package
 Save	Autolaunch view: edit entry		Save
 Shell	Autolaunch view: add new script		Shell
 Reset	text editor view		Reset
@@ -45,55 +65,80 @@ This file currently does not exist. Do you want to create it?	text editor view		
 0.2\tKernel settings options added.	About box		0.2\tKernel settings options added.
 Restore default	Kernel settings	This will not be visible	Restore default
 Bochs debug output	Kernel settings		Bochs debug output
+Open VirtualMemory	Main window	Use the localized name	Open VirtualMemory
+Serial debug speed	Kernel settings		Serial debug speed
+Serial debug output	Kernel settings		Serial debug output
 Kernel configuration	Main window		Kernel configuration
 Disabled. Click to enable and use custom value.	Kernel settings		Disabled. Click to enable and use custom value.
-Serial debug output	Kernel settings		Serial debug output
-Serial debug speed	Kernel settings		Serial debug speed
+The selected executable is part of an user installed package. It cannot be added to the system-wide's blocked entries list.	bl view		The selected executable is part of an user installed package. It cannot be added to the system-wide's blocked entries list.
+OK	Main window		OK
 Error	Autolaunch view: add new script	This will not be visible	Error
 Miscellaneous	Kernel settings		Miscellaneous
 Open in editor	text editor view		Open in editor
 The new script could not be created	Autolaunch view: add new script		The new script could not be created
 Type	Autolaunch view		Type
+OK	bl view		OK
 About…	Main window		About…
+Blacklist: restore all configs	bl view		Blacklist: restore all configs
 Enabled. Click to disable and use automatic value.	Kernel settings		Enabled. Click to disable and use automatic value.
 9600 bit/s	Kernel settings		9600 bit/s
 Understood	Main window		Understood
 Close	Main window		Close
 Settings	Main window		Settings
-Options	Main window		Options
 Do not create	text editor view		Do not create
-Delete entry	Autolaunch view		Delete entry
 Load kernel symbols	Kernel settings		Load kernel symbols
+Delete entry	Autolaunch view		Delete entry
+The file could not be opened. This could be because the file %filename% does not exist or there is not enough permissions to open it.	bl view		The file could not be opened. This could be because the file %filename% does not exist or there is not enough permissions to open it.
+Restore all configurations	Main window		Restore all configurations
+Some of the options in this section could make your system unable to boot due to hardware compatibility issues.\n\nIf a problem during boot occurs after you changed any configuration options here, you can temporarily boot into a good configuration by using the options in the Haiku boot loader and once the system and the Desktop are loaded, open this application and use the button \"Restore\" of the \"Kernel settings\" view.	Main window		Some of the options in this section could make your system unable to boot due to hardware compatibility issues.\n\nIf a problem during boot occurs after you changed any configuration options here, you can temporarily boot into a good configuration by using the options in the Haiku boot loader and once the system and the Desktop are loaded, open this application and use the button \"Restore\" of the \"Kernel settings\" view.
+Do not clear	bl view		Do not clear
 Create shell script…	Autolaunch view		Create shell script…
 Edit entry	Autolaunch view: edit entry		Edit entry
-All fields are mandatory.	Autolaunch view: add new script		All fields are mandatory.
+Blacklist: error	bl view		Blacklist: error
 Syslog: buffer size	Kernel settings		Syslog: buffer size
+All fields are mandatory.	Autolaunch view: add new script		All fields are mandatory.
+Add	bl view	For user list	Add
 Update	Kernel settings		Update
-Open BootManager	Main window		Open BootManager
 Cancel	Autolaunch view: add new script		Cancel
+This entry cannot be added.\n\nThis could be because there is a problem with the file or due to an unexpected error.	bl view		This entry cannot be added.\n\nThis could be because there is a problem with the file or due to an unexpected error.
+Quit	Main window		Quit
+Blacklist: list not found	bl view		Blacklist: list not found
 Syslog: include time stamps	Kernel settings		Syslog: include time stamps
-Name	Autolaunch view: add new script		Name
+Remove	bl view	For user list	Remove
 Syslog: max size	Kernel settings		Syslog: max size
+Help	Main window		Help
+Name	Autolaunch view: add new script		Name
+Documentation: error	Main window		Documentation: error
 Cancel	Autolaunch view		Cancel
 Add	Autolaunch view		Add
+package and its contents	bl view		package and its contents
 Destination: 	Autolaunch view		Destination: 
 115200 bit/s	Kernel settings		115200 bit/s
-Some of the options in this sections could make your system unable to boot due to hardware compatibility issues.\n\nIf a problem during boot occurs after you changed any configuration options here, you can temporarily boot into a good configuration by using the options in the Haiku boot loader and once the system and the Desktop are loaded, open this application and use the button \"Restore\" of the \"Kernel settings\" view.	Main window		Some of the options in this sections could make your system unable to boot due to hardware compatibility issues.\n\nIf a problem during boot occurs after you changed any configuration options here, you can temporarily boot into a good configuration by using the options in the Haiku boot loader and once the system and the Desktop are loaded, open this application and use the button \"Restore\" of the \"Kernel settings\" view.
+Blacklist: delete item	bl view		Blacklist: delete item
+Open BootManager	Main window	Use the localized name	Open BootManager
 Error	Autolaunch view	This will not be visible	Error
 Restore to default? The current file's contents will be replaced.	text editor view		Restore to default? The current file's contents will be replaced.
+Restore	bl view		Restore
 Website:	About box		Website:
 ACPI support for modern hardware	Kernel settings		ACPI support for modern hardware
 Do not restore	text editor view		Do not restore
+Clear	bl view		Clear
 Do you want to restore kernel settings default values?	Kernel settings		Do you want to restore kernel settings default values?
 Error, an entry must be selected first.	Autolaunch view		Error, an entry must be selected first.
+Restore all default configurations…	Main window		Restore all default configurations…
+Do you want to clear this blacklist? This cannot be undone.	bl view		Do you want to clear this blacklist? This cannot be undone.
 Update	Autolaunch view		Update
 57600 bit/s	Kernel settings		57600 bit/s
 Symlink	Autolaunch view		Symlink
 Start-up items editor.	About box		Start-up items editor.
+Do you want to restore all the configurations to their default values? This action cannot be undone.	Main window		Do you want to restore all the configurations to their default values? This action cannot be undone.
 Save	text editor view		Save
 Delete	Autolaunch view		Delete
 38400 bit/s	Kernel settings		38400 bit/s
+Do you want to remove this %type% from the blocked entries list:\n\n%what%	bl view		Do you want to remove this %type% from the blocked entries list:\n\n%what%
 Help topics	Main window		Help topics
+The selected executable is part of a system installed package. It cannot be added to the current user's blocked entries list.	bl view		The selected executable is part of a system installed package. It cannot be added to the current user's blocked entries list.
+Restore all	bl view		Restore all
 Boot Loader	Main window		Boot Loader
 Close	Autolaunch view		Close
 Restore	Kernel settings		Restore
@@ -101,12 +146,18 @@ Delete entry	Autolaunch view	This will not be visible	Delete entry
 19200 bit/s	Kernel settings		19200 bit/s
 Directory	Autolaunch view		Directory
 Disable IO-APIC	Kernel settings		Disable IO-APIC
+The blacklist cannot be cleared because the blacklist file currently does not exist.	bl view		The blacklist cannot be cleared because the blacklist file currently does not exist.
+Add	bl view	For system list	Add
 Do not warn about kernel settings	Main window		Do not warn about kernel settings
-Do you want to delete this entry?	Autolaunch view		Do you want to delete this entry?
 Cafeina (original author)	About box		Cafeina (original author)
+Do you want to delete this entry?	Autolaunch view		Do you want to delete this entry?
+Do not restore	Main window		Do not restore
+Blacklist	Main window		Blacklist
 Read only	text editor view		Read only
+The documentation files could not be found.\n	Main window		The documentation files could not be found.\n
 Disabling components of packages	Main window		Disabling components of packages
 Update	text editor view		Update
+StartUp	Main window	This is the App menu. It should be the same as the \"system name\".	StartUp
 Edit entry	Autolaunch view: add new script		Edit entry
 Ignore all the memory beyond 4 GB	Kernel settings		Ignore all the memory beyond 4 GB
 User scripts	Main window		User scripts
