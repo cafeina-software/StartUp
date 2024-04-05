@@ -2,6 +2,7 @@
 #include <InterfaceKit.h>
 #include <Url.h>
 #include <Catalog.h>
+#include <PathFinder.h>
 #include <cstdio>
 
 #include "StartUpWin.h"
@@ -17,9 +18,9 @@
 #define B_TRANSLATION_CONTEXT "Main window"
 
 StartUpWin::StartUpWin()
-: BWindow(BRect(50,50,1000,600), B_TRANSLATE_SYSTEM_NAME("StartUp"), B_TITLED_WINDOW,
+: BWindow(BRect(50,50,1000,650), B_TRANSLATE_SYSTEM_NAME("StartUp"), B_TITLED_WINDOW,
     B_CLOSE_ON_ESCAPE | B_QUIT_ON_WINDOW_CLOSE | B_ASYNCHRONOUS_CONTROLS),
-    kswarningshown(false)
+    kswarningshown(false), blwarningshown(false)
 {
     struct tabsdata {
         const char* name;
@@ -30,7 +31,7 @@ StartUpWin::StartUpWin()
         { B_TRANSLATE("Terminal environment"), M_VIEW_TERMPROFILE, 1 },
         { B_TRANSLATE("User scripts"),         M_VIEW_USERSCRIPTS, 2 },
         { B_TRANSLATE("Kernel settings"),      M_VIEW_KERNELSET,   3 },
-        { B_TRANSLATE("Blacklist"),            M_VIEW_BLACKLIST,   4 }
+        { B_TRANSLATE("Blocking lists"),       M_VIEW_BLACKLIST,   4 }
     };
     SetSizeLimits(550, B_SIZE_UNLIMITED, 550, B_SIZE_UNLIMITED);
 
@@ -89,7 +90,7 @@ void StartUpWin::MessageReceived(BMessage* message)
             uint32 id;
             if(message->FindUInt32("id", &id) == B_OK) {
                 if(id == 3 && !kswarningshown) {
-                    BAlert *alert = new BAlert(B_TRANSLATE("Kernel configuration"),
+                    DisplayWarning(kswarningshown, B_TRANSLATE("Kernel configuration"),
                         B_TRANSLATE(
                         "Some of the options in this section could make your system "
                         "unable to boot due to hardware compatibility issues.\n\n"
@@ -99,14 +100,16 @@ void StartUpWin::MessageReceived(BMessage* message)
                         "boot loader and once the system and the Desktop are loaded, "
                         "open this application and use the button \"Restore\" "
                         "of the \"Kernel settings\" view."),
-                        B_TRANSLATE("Understood"), NULL, NULL, B_WIDTH_AS_USUAL,
-                        B_WARNING_ALERT);
-                    int32 result = alert->Go();
-
-                    if(result == 0) {
-                        kswarningshown = true;
-                        optionsMenu->FindItem(B_TRANSLATE("Do not warn about kernel settings"))->SetMarked(kswarningshown);
-                    }
+                        B_TRANSLATE("Do not warn about kernel settings"));
+                }
+                if(id == 4 && !blwarningshown) {
+                    DisplayWarning(blwarningshown, B_TRANSLATE("Blocking lists"),
+                        B_TRANSLATE("Adding certain core system items to the "
+                        "system's blocked entries list could make the system "
+                        "unbootable. If the system is unable to boot, use the "
+                        "safe mode from the Haiku boot loader and with the "
+                        "system booted, use the \"Restore all\" option."),
+                        B_TRANSLATE("Do not warn about blocking lists"));
                 }
 
                 optionsMenu->SubmenuAt(optionsMenu->IndexOf(tabSelectionMenu))->ItemAt(id)->SetMarked(true);
@@ -146,18 +149,13 @@ void StartUpWin::MessageReceived(BMessage* message)
                 tabView->Select(4);
             break;
         case M_HELP_DOCS:
-            if(launch("text/html", "./index.html") != B_OK) {
-                BAlert* alert = new BAlert(B_TRANSLATE("Documentation: error"),
-                    B_TRANSLATE("The documentation files could not be found.\n"),
-                    B_TRANSLATE("OK"));
-                alert->Go();
-            }
+            OpenDocumentation();
             break;
         case 'hbsh':
-            OpenDocumentation("bash-scripting");
+            OpenUGDocumentation("bash-scripting");
             break;
         case 'hboo':
-            OpenDocumentation("bootloader");
+            OpenUGDocumentation("bootloader");
             break;
         case 'hdis':
             launch("application/x-vnd.Be.URL.https",
@@ -165,7 +163,13 @@ void StartUpWin::MessageReceived(BMessage* message)
             break;
         case M_SETTINGS_KSWARN:
             kswarningshown = !kswarningshown;
-            optionsMenu->FindItem(B_TRANSLATE("Do not warn about kernel settings"))->SetMarked(kswarningshown);
+            optionsMenu->FindItem(B_TRANSLATE("Do not warn about kernel settings"))->
+                SetMarked(kswarningshown);
+            break;
+        case M_SETTINGS_BLWARN:
+            blwarningshown = !blwarningshown;
+            optionsMenu->FindItem(B_TRANSLATE("Do not warn about blocking lists"))->
+                SetMarked(blwarningshown);
             break;
         case M_RESTORE_DEFAULT:
             RestoreAllConfigs();
@@ -199,7 +203,8 @@ void StartUpWin::StartMonitoring()
     LoadWatcher(BLACKLIST_USER);
 
     for(const auto& it : cached_values)
-        __trace("Cached: file(%s), device(%d), node(%ld)\n", it.first, it.second.device, it.second.node);
+        __trace("Cached: file(%s), device(%d), node(%ld)\n",
+            it.first, it.second.device, it.second.node);
 }
 
 void StartUpWin::StopMonitoring()
@@ -231,7 +236,11 @@ status_t StartUpWin::LoadSettings(BMessage* indata)
     }
 
     if(indata->FindBool("ui.dismissKSWarning", &kswarningshown) == B_OK)
-        optionsMenu->FindItem(B_TRANSLATE("Do not warn about kernel settings"))->SetMarked(kswarningshown);
+        optionsMenu->FindItem(B_TRANSLATE("Do not warn about kernel settings"))->
+            SetMarked(kswarningshown);
+    if(indata->FindBool("ui.dismissBLWarning", &blwarningshown) == B_OK)
+        optionsMenu->FindItem(B_TRANSLATE("Do not warn about blocking lists"))->
+            SetMarked(blwarningshown);
 
     return B_OK;
 }
@@ -242,6 +251,8 @@ status_t StartUpWin::SaveSettings(BMessage* outdata)
         outdata->AddRect("pos", Frame());
     if(outdata->ReplaceBool("ui.dismissKSWarning", kswarningshown) != B_OK)
         outdata->AddBool("ui.dismissKSWarning", kswarningshown);
+    if(outdata->ReplaceBool("ui.dismissBLWarning", blwarningshown) != B_OK)
+        outdata->AddBool("ui.dismissBLWarning", blwarningshown);
 
     return B_OK;
 }
@@ -506,7 +517,48 @@ void StartUpWin::NodeMonitor(BMessage* msg)
     }
 }
 
-void StartUpWin::OpenDocumentation(const char* what)
+void StartUpWin::OpenDocumentation()
+{
+    BString docindex("index.html");
+    BStringList matchlist;
+    BPathFinder finder;
+    BPath path;
+
+    // Try to find documentation in common documentation directory first
+    status_t status = finder.FindPaths(B_FIND_PATH_DOCUMENTATION_DIRECTORY,
+        "packages/startup", B_FIND_PATH_EXISTING_ONLY, matchlist);
+    int i = 0;
+    bool found = false;
+    while(i < matchlist.CountStrings() && !found) {
+        path.SetTo(matchlist.StringAt(i), docindex, true);
+        if(exists(path.Path()))
+            found = true;
+    }
+
+    // otherwise, try to find it under app's directory
+    if(!found) {
+        app_info info;
+        be_app->GetAppInfo(&info);
+        BEntry appentry(&info.ref);
+        BPath apppath;
+        appentry.GetPath(&apppath);
+        apppath.GetParent(&apppath);
+        apppath.Append("documentation", true);
+        path.SetTo(apppath.Path(), docindex.String(), true);
+    }
+
+    // launch, or whine!
+    if(exists(path.Path()))
+        launch("text/html", path.Path());
+    else {
+        BAlert* alert = new BAlert(B_TRANSLATE("Documentation: error"),
+            B_TRANSLATE("The documentation files could not be found.\n"),
+            B_TRANSLATE("OK"));
+        alert->Go();
+    }
+}
+
+void StartUpWin::OpenUGDocumentation(const char* what)
 {
     BString localdoc("file:///boot/system/documentation/userguide/%lang%/%doc%.html");
     localdoc.ReplaceAll("%lang%", B_TRANSLATE_COMMENT("en",
@@ -552,7 +604,7 @@ void StartUpWin::RestoreAllConfigs()
 
 BMenuBar* StartUpWin::BuildMenu()
 {
-    BMenuBar* menu = new BMenuBar("");
+    BMenuBar* menu = new BMenuBar("mb_main");
 
     tabSelectionMenu = new BMenu(B_TRANSLATE("Go to"), B_ITEMS_IN_COLUMN);
     tabSelectionMenu->SetRadioMode(true);
@@ -571,6 +623,7 @@ BMenuBar* StartUpWin::BuildMenu()
         .End()
         .AddMenu(B_TRANSLATE("Settings"))
             .AddItem(B_TRANSLATE("Do not warn about kernel settings"), M_SETTINGS_KSWARN)
+            .AddItem(B_TRANSLATE("Do not warn about blocking lists"), M_SETTINGS_BLWARN)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Restore all default configurations" B_UTF8_ELLIPSIS),
                 M_RESTORE_DEFAULT, 'R', B_SHIFT_KEY)
@@ -590,6 +643,18 @@ BMenuBar* StartUpWin::BuildMenu()
     return menu;
 }
 
+void StartUpWin::DisplayWarning(bool& setting, const char* title, const char* text,
+    const char* menuitemname)
+{
+    BAlert *alert = new BAlert(title, text, B_TRANSLATE("Understood"), NULL,
+        NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+    int32 result = alert->Go();
+
+    if(result == 0) {
+        setting = true;
+        optionsMenu->FindItem(menuitemname)->SetMarked(setting);
+    }
+}
 
 bool StartUpWin::LoadWatcher(const char* path, bool addToCache)
 {

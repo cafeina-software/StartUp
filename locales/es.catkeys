@@ -1,4 +1,4 @@
-1	Spanish	application/x-vnd.Haiku-StartUp	1479602405
+1	Spanish	application/x-vnd.Haiku-StartUp	2902057298
 Command	Autolaunch view		Comando
 Terminal environment	Main window		Entorno de la terminal
 Enable single step hack for QEMU	Kernel settings		Habilitar hack de un solo paso para QEMU
@@ -55,7 +55,7 @@ Check README for more information.	About box		Consulte el archivo README para m�
 Expand / collapse	bl view		Expandir / contraer
 item	bl view		elemento
 Update	bl view		Actualizar
-0.3\tSystem and user blacklists editor added.	About box		0.3\tAñadido un editor de lista de bloqueados del sistema y del usuario.
+0.3\tSystem and user blocking lists editor added.	About box		0.3\tAñadido un editor de lista de bloqueos del sistema y del usuario.
 Restore?	text editor view	This will not be visible	¿Restablecer?
 View package	bl view		Ver paquete
 Save	Autolaunch view: edit entry		Guardar
@@ -79,7 +79,7 @@ The new script could not be created	Autolaunch view: add new script		No se pudo 
 Type	Autolaunch view		Tipo
 OK	bl view		Aceptar
 About…	Main window		Acerca de…
-Blacklist: restore all configs	bl view		Blacklist: restablecer todos los ajustes
+Blocking lists: restore all configs	bl view		Listas de bloqueos: restablecer todos los ajustes
 Enabled. Click to disable and use automatic value.	Kernel settings		Habilitado. Hacer clic para deshabilitar y usar el valor automático.
 9600 bit/s	Kernel settings		9600 bit/s
 Understood	Main window		Entendido
@@ -94,7 +94,7 @@ Some of the options in this section could make your system unable to boot due to
 Do not clear	bl view		No limpiar
 Create shell script…	Autolaunch view		Crear guion de shell…
 Edit entry	Autolaunch view: edit entry		Editar entrada
-Blacklist: error	bl view		Lista negra: error
+Blocking list: error	bl view		Lista de bloqueos: error
 Syslog: buffer size	Kernel settings		Registro del sistema: tamaño del búfer
 All fields are mandatory.	Autolaunch view: add new script		Todos los campos son obligatorios.
 Add	bl view	For user list	Añadir
@@ -102,7 +102,7 @@ Update	Kernel settings		Actualizar
 Cancel	Autolaunch view: add new script		Cancelar
 This entry cannot be added.\n\nThis could be because there is a problem with the file or due to an unexpected error.	bl view		No se pudo añadir esta entrada.\n\nEsto puede deberse a que hubo un problema con el archivo o debido a un error inesperado.
 Quit	Main window		Salir
-Blacklist: list not found	bl view		Lista negra: lista no encontrada
+Blocking list: list not found	bl view		Lista de bloqueos: lista no encontrada
 Syslog: include time stamps	Kernel settings		Registro del sistema: incluir marcas de tiempo
 Remove	bl view	For user list	Quitar
 Syslog: max size	Kernel settings		Registro del sistema: tamaño máximo
@@ -114,7 +114,7 @@ Add	Autolaunch view		Añadir
 package and its contents	bl view		paquete y sus contenidos
 Destination: 	Autolaunch view		Destino:
 115200 bit/s	Kernel settings		115200 bit/s
-Blacklist: delete item	bl view		Lista negra: eliminar elemento
+Blocking list: delete item	bl view		Lista de bloqueos: eliminar elemento
 Open BootManager	Main window	Use the localized name	Abrir Gestor de arranque
 Error	Autolaunch view	This will not be visible	Error
 Restore to default? The current file's contents will be replaced.	text editor view		¿Desea restablecer el archivo al valor predeterminado? El archivo actual será reemplazado.
@@ -126,7 +126,7 @@ Clear	bl view		Limpiar
 Do you want to restore kernel settings default values?	Kernel settings		¿Desea restablecer los ajustes del núcleo a sus valores predeterminados?
 Error, an entry must be selected first.	Autolaunch view		Error, primero debe seleccionar una entrada.
 Restore all default configurations…	Main window		Restablecer todos los ajustes de inicio…
-Do you want to clear this blacklist? This cannot be undone.	bl view		¿Desea limpiar esta lista negra? Esta acción no puede deshacerse.
+Do you want to clear this list? This cannot be undone.	bl view		¿Desea limpiar esta lista de bloqueos? Esta acción no puede deshacerse.
 Update	Autolaunch view		Actualizar
 57600 bit/s	Kernel settings		57600 bit/s
 Symlink	Autolaunch view		Enlace simbólico
@@ -146,13 +146,12 @@ Delete entry	Autolaunch view	This will not be visible	Eliminar entrada
 19200 bit/s	Kernel settings		19200 bit/s
 Directory	Autolaunch view		Carpeta
 Disable IO-APIC	Kernel settings		Deshabilitar IO-APIC
-The blacklist cannot be cleared because the blacklist file currently does not exist.	bl view		La lista negra no se puede limpiar debido a que el archivo de lista negra actualmente no existe.
+The list cannot be cleared because the blocked entries file currently does not exist.	bl view		La lista de bloqueos no se puede limpiar debido a que el archivo de lista de bloqueos actualmente no existe.
 Add	bl view	For system list	Añadir
 Do not warn about kernel settings	Main window		No advertir sobre la configuración del núcleo
 Cafeina (original author)	About box		Cafeina (autor original)
 Do you want to delete this entry?	Autolaunch view		¿Desea eliminar esta entrada?
 Do not restore	Main window		No restablecer
-Blacklist	Main window		Lista negra
 Read only	text editor view		Sólo lectura
 The documentation files could not be found.\n	Main window		No se pudo encontrar los archivos de documentación.\n
 Disabling components of packages	Main window		Deshabilitar componentes de los paquetes
@@ -161,5 +160,7 @@ StartUp	Main window	This is the App menu. It should be the same as the \"system 
 Edit entry	Autolaunch view: add new script		Editar entrada
 Ignore all the memory beyond 4 GB	Kernel settings		Ignorar toda la memoria más allá de 4 GB
 User scripts	Main window		Guiones del usuario
-io
-
+Adding certain core system items to the system's blocked entries list could make the system unbootable. If the system is unable to boot, use the safe mode from the Haiku boot loader and with the system booted, use the \"Restore all\" option.	Main window		Añadir ciertos elementos centrales del sistema a la lista de bloqueos del sistema podría hacer que el sistema no pueda arrancar. Si este es el caso, utilice el modo seguro del Gestor de arranque de Haiku para iniciar y una vez que el sistema haya iniciado, use la opción \"Restablecer todo\".
+Do not warn about blocking lists	Main window		No advertir sobre las listas de bloqueos
+Blocking lists	Main window		Listas de bloqueos
+s

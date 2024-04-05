@@ -11,25 +11,25 @@ StartUpApp::StartUpApp()
 : BApplication(kAppSignature)
 {
     if(userscript_load(USER_BOOT_SCRIPT, &ubsdata) != B_OK)
-        fprintf(stderr, "UBS not loaded\n");
+        __trace("UBS not loaded\n");
 
     if(userscript_load(USER_SHUTDOWN_SCRIPT, &ussdata) != B_OK)
-        fprintf(stderr, "USS not loaded\n");
+        __trace("USS not loaded\n");
 
     if(userscript_load(USER_SHUTDOWN_FINISH_SCRIPT, &usfdata) != B_OK)
-        fprintf(stderr, "USFS not loaded\n");
+        __trace("USFS not loaded\n");
 
     if(autolaunch_load(autolaunch_list) != B_OK)
-        fprintf(stderr, "Autolaunch not loaded\n");
+        __trace("Autolaunch not loaded\n");
 
     if(userscript_load(USER_SETUP_ENVIRONMENT, &usedata) != B_OK)
-        fprintf(stderr, "USE not loaded\n");
+        __trace("USE not loaded\n");
 
     if(userscript_load(USER_PROF_ENV, &profdata) != B_OK)
-        fprintf(stderr, "\"profile\" file not loaded\n");
+        __trace("\"profile\" file not loaded\n");
 
     if(kernelsettings_load(&kernelsettings_list) != B_OK) {
-        fprintf(stderr, "\"kernelsettings\" not loaded\n");
+        __trace("\"kernelsettings\" not loaded\n");
         kernelsettings_create();
         kernelsettings_load(&kernelsettings_list);
     }
@@ -87,7 +87,7 @@ void StartUpApp::AboutRequested()
 		NULL
 	};
 	const char* history[] = {
-        B_TRANSLATE("0.3\tSystem and user blacklists editor added."),
+        B_TRANSLATE("0.3\tSystem and user blocking lists editor added."),
         B_TRANSLATE("0.2\tKernel settings options added."),
 		B_TRANSLATE("0.1\tInitial version."),
 		NULL
@@ -148,24 +148,24 @@ status_t StartUpApp::_LoadSettings()
     status_t status = B_OK;
     BPath usrsetpath;
     if((status = find_directory(B_USER_SETTINGS_DIRECTORY, &usrsetpath)) != B_OK) {
-        fprintf(stderr, "%s > user settings dir could not even be found\n", __func__);
+        __trace("User settings dir could not even be found\n");
         return status;
     }
 
     usrsetpath.Append(kAppName ".settings");
     BFile file(usrsetpath.Path(), B_READ_ONLY);
     if((status = file.InitCheck()) != B_OK) {
-        fprintf(stderr, "%s > user settings file \"%s\" could not even be opened\n", __func__, usrsetpath.Path());
+        __trace("User settings file \"%s\" could not even be opened\n", usrsetpath.Path());
         return status;
     }
 
     if((status = currentSettings.Unflatten(&file)) != B_OK) {
-        fprintf(stderr, "%s > settings could not be unflattened from the file \n", __func__);
+        __trace("Settings could not be unflattened from the file \n");
         return status;
     }
 
     if((status = win->LoadSettings(&currentSettings)) != B_OK) {
-        fprintf(stderr, "%s > settings could not be loaded to the window\n", __func__);
+        __trace("Settings could not be loaded to the window\n");
         return status;
     }
 
@@ -181,20 +181,20 @@ status_t StartUpApp::_SaveSettings()
     }
     BPath usrsetpath;
     if((status = find_directory(B_USER_SETTINGS_DIRECTORY, &usrsetpath)) != B_OK) {
-        fprintf(stderr, "%s > user settings dir could not even be found\n", __func__);
+        __trace("User settings dir could not even be found\n");
         return status;
     }
 
     usrsetpath.Append(kAppName ".settings");
     BFile file(usrsetpath.Path(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
     if((status = file.InitCheck()) != B_OK) {
-        fprintf(stderr, "%s > user settings file \"%s\" could not even be set\n", __func__, usrsetpath.Path());
+        __trace("User settings file \"%s\" could not even be set\n", usrsetpath.Path());
         return status;
     }
     file.SetPermissions(DEFFILEMODE);
 
     if((status = currentSettings.Flatten(&file)) != B_OK) {
-        fprintf(stderr, "%s > settings could not be flattened to the file \n", __func__);
+        __trace("Settings could not be flattened to the file \n");
         return status;
     }
 

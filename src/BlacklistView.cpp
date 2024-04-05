@@ -6,7 +6,6 @@
 #include <PathFinder.h>
 #include <Resources.h>
 #include <kernel/fs_attr.h>
-#include <package/PackageResolvableExpression.h>
 #include <algorithm>
 
 #include "BlacklistView.h"
@@ -205,7 +204,7 @@ void BlacklistView::MessageReceived(BMessage *msg)
                 "lists:\n\n%lists%\n\n"));
             text.ReplaceAll("%lists%", BLACKLIST_SYSTEM "\n" BLACKLIST_USER);
 
-            BAlert* alert = new BAlert(B_TRANSLATE("Blacklist: restore all configs"),
+            BAlert* alert = new BAlert(B_TRANSLATE("Blocking lists: restore all configs"),
                 text, B_TRANSLATE("Do not restore"), B_TRANSLATE("Restore"),
                 NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
             int32 result = alert->Go();
@@ -247,7 +246,7 @@ void BlacklistView::MessageReceived(BMessage *msg)
                 }
                 else {
                     BAlert *alert = new BAlert();
-                    alert->SetTitle(B_TRANSLATE("Blacklist: error"));
+                    alert->SetTitle(B_TRANSLATE("Blocking list: error"));
                     alert->AddButton(B_TRANSLATE("OK"));
                     alert->SetType(B_STOP_ALERT);
                     if(ref_status == E_SYSPKGBIN_IN_USRLST)
@@ -505,7 +504,7 @@ status_t BlacklistView::_AddToList(BString path, PackageList* list)
 void BlacklistView::_Remove(MyOutlineListView* olv, PackageList* list)
 {
     BAlert* alert = new BAlert();
-    alert->SetTitle(B_TRANSLATE("Blacklist: delete item"));
+    alert->SetTitle(B_TRANSLATE("Blocking list: delete item"));
 
     BListItem* selItem;
     int32 selected;
@@ -574,18 +573,18 @@ status_t BlacklistView::_RemoveEntry(PackageList* list, IconStringItem* parent, 
 void BlacklistView::_ClearList(BString path, PackageList* list)
 {
     BAlert *alert = new BAlert();
-    alert->SetTitle("Blacklist: clear");
+    alert->SetTitle("Blocking list: clear");
 
     if(exists(path.String())) {
-        alert->SetText(B_TRANSLATE("Do you want to clear this blacklist? "
+        alert->SetText(B_TRANSLATE("Do you want to clear this list? "
             "This cannot be undone."));
         alert->AddButton(B_TRANSLATE("Do not clear"));
         alert->AddButton(B_TRANSLATE("Clear"));
         alert->SetType(B_WARNING_ALERT);
     }
     else {
-        alert->SetText(B_TRANSLATE("The blacklist cannot be cleared because the "
-            "blacklist file currently does not exist."));
+        alert->SetText(B_TRANSLATE("The list cannot be cleared because the "
+            "blocked entries file currently does not exist."));
         alert->AddButton(B_TRANSLATE("OK"));
         alert->SetType(B_IDEA_ALERT);
     }
@@ -695,7 +694,7 @@ void BlacklistView::_OpenList(BString listpath)
             "permissions to open it."));
         text.ReplaceAll("%filename%", listpath);
 
-        BAlert* alert = new BAlert(B_TRANSLATE("Blacklist: list not found"),
+        BAlert* alert = new BAlert(B_TRANSLATE("Blocking list: list not found"),
             text, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
         alert->Go();
     }

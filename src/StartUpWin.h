@@ -17,6 +17,7 @@
 #define M_LAUNCH_BOOTMAN   'boot'
 #define M_LAUNCH_VMEM      'vmem'
 #define M_SETTINGS_KSWARN  'diss'
+#define M_SETTINGS_BLWARN  'blis'
 #define M_VIEW_AUTOLAUNCH  'tab0'
 #define M_VIEW_TERMPROFILE 'tab1'
 #define M_VIEW_USERSCRIPTS 'tab2'
@@ -34,12 +35,17 @@ public:
     status_t             LoadSettings        (BMessage* indata);
     status_t             SaveSettings        (BMessage* outdata);
 private:
-    void                 NodeMonitor         (BMessage* msg);
-    void                 OpenDocumentation   (const char* entry);
-    void                 RestoreAllConfigs   ();
     BMenuBar            *BuildMenu           ();
+    void                 DisplayWarning      (bool& setting, const char* title,
+                                              const char* text, const char* menuitemname);
+
+    void                 NodeMonitor         (BMessage* msg);
     bool                 LoadWatcher         (const char* path, bool addToCache = true);
     void                 UnloadWatcher       (const char* path);
+
+    void                 OpenDocumentation   ();
+    void                 OpenUGDocumentation (const char* entry);
+    void                 RestoreAllConfigs   ();
 private:
     BTabView            *tabView;
     BMenuBar            *optionsMenu;
@@ -50,7 +56,8 @@ private:
                         *termenvview;
     KernelSettingsView  *kernview;
     BlacklistView       *blview;
-    bool                 kswarningshown;
+    bool                 kswarningshown,
+                         blwarningshown;
     std::unordered_map<const char*,node_ref> cached_values;
 };
 

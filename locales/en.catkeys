@@ -1,4 +1,4 @@
-1	English	application/x-vnd.Haiku-StartUp	1479602405
+1	English	application/x-vnd.Haiku-StartUp	2902057298
 Command	Autolaunch view		Command
 Terminal environment	Main window		Terminal environment
 Enable single step hack for QEMU	Kernel settings		Enable single step hack for QEMU
@@ -55,7 +55,7 @@ Check README for more information.	About box		Check README for more information.
 Expand / collapse	bl view		Expand / collapse
 item	bl view		item
 Update	bl view		Update
-0.3\tSystem and user blacklists editor added.	About box		0.3\tSystem and user blacklists editor added.
+0.3\tSystem and user blocking lists editor added.	About box		0.3\tSystem and user blocking lists editor added.
 Restore?	text editor view	This will not be visible	Restore?
 View package	bl view		View package
 Save	Autolaunch view: edit entry		Save
@@ -79,7 +79,7 @@ The new script could not be created	Autolaunch view: add new script		The new scr
 Type	Autolaunch view		Type
 OK	bl view		OK
 About…	Main window		About…
-Blacklist: restore all configs	bl view		Blacklist: restore all configs
+Blocking lists: restore all configs	bl view		Blocking lists: restore all configs
 Enabled. Click to disable and use automatic value.	Kernel settings		Enabled. Click to disable and use automatic value.
 9600 bit/s	Kernel settings		9600 bit/s
 Understood	Main window		Understood
@@ -94,7 +94,7 @@ Some of the options in this section could make your system unable to boot due to
 Do not clear	bl view		Do not clear
 Create shell script…	Autolaunch view		Create shell script…
 Edit entry	Autolaunch view: edit entry		Edit entry
-Blacklist: error	bl view		Blacklist: error
+Blocking list: error	bl view		Blocking list: error
 Syslog: buffer size	Kernel settings		Syslog: buffer size
 All fields are mandatory.	Autolaunch view: add new script		All fields are mandatory.
 Add	bl view	For user list	Add
@@ -102,7 +102,7 @@ Update	Kernel settings		Update
 Cancel	Autolaunch view: add new script		Cancel
 This entry cannot be added.\n\nThis could be because there is a problem with the file or due to an unexpected error.	bl view		This entry cannot be added.\n\nThis could be because there is a problem with the file or due to an unexpected error.
 Quit	Main window		Quit
-Blacklist: list not found	bl view		Blacklist: list not found
+Blocking list: list not found	bl view		Blocking list: list not found
 Syslog: include time stamps	Kernel settings		Syslog: include time stamps
 Remove	bl view	For user list	Remove
 Syslog: max size	Kernel settings		Syslog: max size
@@ -114,7 +114,7 @@ Add	Autolaunch view		Add
 package and its contents	bl view		package and its contents
 Destination: 	Autolaunch view		Destination: 
 115200 bit/s	Kernel settings		115200 bit/s
-Blacklist: delete item	bl view		Blacklist: delete item
+Blocking list: delete item	bl view		Blocking list: delete item
 Open BootManager	Main window	Use the localized name	Open BootManager
 Error	Autolaunch view	This will not be visible	Error
 Restore to default? The current file's contents will be replaced.	text editor view		Restore to default? The current file's contents will be replaced.
@@ -126,8 +126,8 @@ Clear	bl view		Clear
 Do you want to restore kernel settings default values?	Kernel settings		Do you want to restore kernel settings default values?
 Error, an entry must be selected first.	Autolaunch view		Error, an entry must be selected first.
 Restore all default configurations…	Main window		Restore all default configurations…
-Do you want to clear this blacklist? This cannot be undone.	bl view		Do you want to clear this blacklist? This cannot be undone.
 Update	Autolaunch view		Update
+Do you want to clear this list? This cannot be undone.	bl view		Do you want to clear this list? This cannot be undone.
 57600 bit/s	Kernel settings		57600 bit/s
 Symlink	Autolaunch view		Symlink
 Start-up items editor.	About box		Start-up items editor.
@@ -146,13 +146,12 @@ Delete entry	Autolaunch view	This will not be visible	Delete entry
 19200 bit/s	Kernel settings		19200 bit/s
 Directory	Autolaunch view		Directory
 Disable IO-APIC	Kernel settings		Disable IO-APIC
-The blacklist cannot be cleared because the blacklist file currently does not exist.	bl view		The blacklist cannot be cleared because the blacklist file currently does not exist.
+The list cannot be cleared because the blocked entries file currently does not exist.	bl view		The list cannot be cleared because the blocked entries file currently does not exist.
 Add	bl view	For system list	Add
 Do not warn about kernel settings	Main window		Do not warn about kernel settings
 Cafeina (original author)	About box		Cafeina (original author)
 Do you want to delete this entry?	Autolaunch view		Do you want to delete this entry?
 Do not restore	Main window		Do not restore
-Blacklist	Main window		Blacklist
 Read only	text editor view		Read only
 The documentation files could not be found.\n	Main window		The documentation files could not be found.\n
 Disabling components of packages	Main window		Disabling components of packages
@@ -161,3 +160,6 @@ StartUp	Main window	This is the App menu. It should be the same as the \"system 
 Edit entry	Autolaunch view: add new script		Edit entry
 Ignore all the memory beyond 4 GB	Kernel settings		Ignore all the memory beyond 4 GB
 User scripts	Main window		User scripts
+Adding certain core system items to the system's blocked entries list could make the system unbootable. If the system is unable to boot, use the safe mode from the Haiku boot loader and with the system booted, use the \"Restore all\" option.	Main window		Adding certain core system items to the system's blocked entries list could make the system unbootable. If the system is unable to boot, use the safe mode from the Haiku boot loader and with the system booted, use the \"Restore all\" option.
+Do not warn about blocking lists	Main window		Do not warn about blocking lists
+Blocking lists	Main window		Blocking lists
